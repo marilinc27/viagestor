@@ -3,19 +3,20 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class Authenticate extends Middleware
 {
     /**
      * Get the path the user should be redirected to when they are not authenticated.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string|null
      */
-    protected function redirectTo($request)
+    protected function redirectTo(Request $request): ?string
     {
-        if (! $request->expectsJson()) {
-            return route('login');
-        }
+        Session::flush();
+        Session::flash('mensaje', 'Tu sesión ha expirado, por favor inicia sesión de nuevo.');
+
+        $response = $request->expectsJson() ? null : route('login');
+        return $response;
     }
 }

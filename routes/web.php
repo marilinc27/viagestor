@@ -1,18 +1,35 @@
 <?php
 
+use App\Http\Controllers\AuthenticateController;
+use App\Http\Controllers\CiudadController;
+use App\Http\Controllers\ViajeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RecorridoController;
+use App\Http\Controllers\ColectivoController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+// Route::get('/', function () {
+//     return view('');
+// });
+//RUTAS AUTH
+Route::get('/', [AuthenticateController::class, 'index'])->name('login');
+Route::post('post-login', [AuthenticateController::class, 'postLogin'])->name('login.post');
+Route::get('registration', [AuthenticateController::class, 'registration'])->name('register');
+Route::post('post-registration', [AuthenticateController::class, 'postRegistration'])->name('register.post');
+Route::get('logout', [AuthenticateController::class, 'logout'])->name('logout');
+Route::get('home', [AuthenticateController::class, 'dashboard'])->name('home');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//RUTAS VIAJE
+Route::resource('viajes', ViajeController::class);
+Route::post('/datosviaje',[ViajeController::class,"datosviaje"])->name('datosviaje');
+
+
+
+//RUTAS RECORRIDOSS
+Route::resource('recorridos', RecorridoController::class);
+Route::post('/recorridos', [RecorridoController::class, 'store'])->name('recorridos.store');
+
+//RUTAS CIUDADES
+Route::post('/datosciudades',[CiudadController::class,"datosCiudades"])->name('datosciudades');
+
+//RUTAS COLECTIVOS
+Route::resource('colectivos', ColectivoController::class);
