@@ -119,7 +119,7 @@
         });
     </script>
 
-    <script src="{{ asset('js/formRecorridos.js') }}">
+    <script src="{{ asset('js/vistas/recorridos/createRecorrido.js') }}">
     </script>
     <script src="{{ asset('js/selects/provincias-ciudades.js') }}"></script>
 @endpush

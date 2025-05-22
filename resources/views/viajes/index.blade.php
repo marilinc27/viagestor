@@ -22,9 +22,9 @@
     </section>
 @endsection
 
-@section('js-scripts')
+@push('scripts')
     <script>
         var urlDatosViaje = "{{ route('datosviaje') }}";
     </script>
     <script src="{{ asset('js/tablas/viajes.js') }}"></script>
-@endsection
+@endpush

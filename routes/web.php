@@ -6,6 +6,7 @@ use App\Http\Controllers\ViajeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\ColectivoController;
+use App\Http\Controllers\ParadaController;
 
 // Route::get('/', function () {
 //     return view('');
@@ -22,12 +23,13 @@ Route::get('home', [AuthenticateController::class, 'dashboard'])->name('home');
 Route::resource('viajes', ViajeController::class);
 Route::post('/datosviaje',[ViajeController::class,"datosviaje"])->name('datosviaje');
 
-
+//RUTAS PARADAS
+Route::resource('paradas', ParadaController::class);
 
 //RUTAS RECORRIDOSS
 Route::resource('recorridos', RecorridoController::class);
 Route::post('/recorridos', [RecorridoController::class, 'store'])->name('recorridos.store');
-
+Route::post('/datosrecorridos',action:[RecorridoController::class, 'getDatosRecorrido'])->name('datosrecorridos');;
 //RUTAS CIUDADES
 Route::post('/datosciudades',[CiudadController::class,"datosCiudades"])->name('datosciudades');
 

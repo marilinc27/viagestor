@@ -14,8 +14,8 @@ class RecorridoController extends Controller
      */
     public function index()
     {
-        $variable = "hola";
-        return view("recorridos.index", compact("variable"));
+        // $recorridos = Recorrido::getRecorridos();
+        return view("recorridos.index");
     }
 
     /**
@@ -45,14 +45,14 @@ class RecorridoController extends Controller
         ]);
 
         $j = 1;
-
+        $acumuladorIntervalo = 0;
         for ($i = 0; $i < count($ciudadesParadas); $i++) {
             $valorDecimal = $ciudadesParadas[$i]['hsTramo'];
             $horas = floor($valorDecimal);
             $minutos = ($valorDecimal - $horas) * 60;
             $intervalo = "{$horas} hours {$minutos} minutes";
 
-
+            $acumuladorIntervalo += $ciudadesParadas[$i]['hsTramo'];
             DB::table('paradas')->insert([
                 'id_recorrido' => $idRecorrido,
                 'id_ciudad_origen' => $ciudadesParadas[$i]['idOrigen'],
@@ -63,6 +63,14 @@ class RecorridoController extends Controller
             $j++;
         }
 
+        // HORAS TOTALES
+        $horas = floor($acumuladorIntervalo);
+        $minutos = ($acumuladorIntervalo - $horas) * 60;
+        $acumuladorIntervalo = "{$horas} hours {$minutos} minutes";
+
+        Recorrido::where('id', $idRecorrido)->update([
+            'hs_total' => $acumuladorIntervalo,
+        ]);
     }
 
     /**
@@ -70,7 +78,7 @@ class RecorridoController extends Controller
      */
     public function show(Recorrido $recorrido)
     {
-        //
+
     }
 
     /**
@@ -96,4 +104,52 @@ class RecorridoController extends Controller
     {
         //
     }
+
+   public function getDatosRecorrido(Request $request){
+      $query = Recorrido::query()
+        ->join('ciudades as o', 'recorridos.id_ciudad_origen', '=', 'o.id')
+            ->join('ciudades as des', 'recorridos.id_ciudad_destino', '=', 'des.id')
+            ->join('estados as e', 'recorridos.estado', '=', 'e.id')
+            ->select(
+                'recorridos.id',
+                'o.nombre as ciudad_origen',
+                'des.nombre as ciudad_destino',
+                'e.estado',
+                'recorridos.hs_total'
+            );
+
+        $total = $query->count();
+
+        // Búsqueda global, o sea por todas las columas
+        if ($search = $request->input('search.value')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('recorridos.id', 'like', "%{$search}%")
+                    ->orWhere('o.nombre', 'like', "%{$search}%")
+                    ->orWhere('des.nombre', 'like', "%{$search}%");
+            });
+        }
+
+        $filtered = $query->count();
+
+        // Ordenar
+        $orderColIndex = $request->input('order.0.column');
+        $orderDir = $request->input('order.0.dir');
+        $orderColName = $request->input("columns.$orderColIndex.data");
+        if ($orderColName) {
+            $query->orderBy($orderColName, $orderDir);
+        }
+
+        // Paginación
+        $start = $request->input('start', 0);
+        $length = $request->input('length', 10);
+
+        $data = $query->skip($start)->take($length)->get();
+
+        return response()->json([
+            'draw' => intval($request->input('draw')),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $filtered,
+            'data' => $data,
+        ]);
+   }
 }
