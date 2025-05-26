@@ -22,3 +22,9 @@
 
 </section>
 @endsection
+@push('scripts')
+    <script>
+        var urlDatosColectivo = "{{ route('datosColectivo') }}";
+    </script>
+    <script src="{{ asset('js/tablas/colectivos.js') }}"></script>
+@endpush

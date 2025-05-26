@@ -35,3 +35,5 @@ Route::post('/datosciudades',[CiudadController::class,"datosCiudades"])->name('d
 
 //RUTAS COLECTIVOS
 Route::resource('colectivos', ColectivoController::class);
+Route::post('/colectivos', [ColectivoController::class, 'store'])->name('colectivos.store');
+Route::post('/datosColectivo',[ColectivoController::class,"datosColectivo"])->name('datosColectivo');

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreColectivoRequest;
 use App\Models\colectivo;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class ColectivoController extends Controller
 {
@@ -21,15 +25,25 @@ class ColectivoController extends Controller
      */
     public function create()
     {
+        
         return view('colectivos.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreColectivoRequest $request) : RedirectResponse
     {
-        return redirect('');
+        $validatedData = $request->validated();
+
+    Colectivo::create([
+        'nro_colectivo' => $validatedData['nro_colectivo'],
+        'cant_butacas' => $validatedData['cant_butacas'],
+        'estado' => '1',
+        'servicios' => $request->input('servicios') ?? '',
+    ]);
+
+    return redirect()->route('colectivos.index')->with('success', 'Colectivo creado correctamente.');
     }
 
     /**
@@ -62,6 +76,44 @@ class ColectivoController extends Controller
     public function destroy(Colectivo $colectivo)
     {
         //
+    }
+
+    public function datosColectivo(Request $request){
+        $query = Colectivo::query();
+
+        $total = $query->count();
+
+         // Búsqueda global, o sea por todas las columas
+        if ($search = $request->input('search.value')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('id', 'like', "%{$search}%")
+                    ->orWhere('nro_colectivo', 'like', "%{$search}%")
+                    ->orWhere('cant_butacas', 'like', "%{$search}%");
+            });
+        }
+
+        $filtered = $query->count();
+
+        // Ordenar
+        $orderColIndex = $request->input('order.0.column');
+        $orderDir = $request->input('order.0.dir');
+        $orderColName = $request->input("columns.$orderColIndex.data");
+        if ($orderColName) {
+            $query->orderBy($orderColName, $orderDir);
+        }
+
+        // Paginación
+        $start = $request->input('start', 0);
+        $length = $request->input('length', 10);
+
+        $data = $query->skip($start)->take($length)->get();
+
+        return response()->json([
+            'draw' => intval($request->input('draw')),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $filtered,
+            'data' => $data,
+        ]);
     }
 
 }

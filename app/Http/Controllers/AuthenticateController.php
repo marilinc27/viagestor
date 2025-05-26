@@ -51,7 +51,7 @@ class AuthenticateController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             return redirect()->intended('home')
-                ->withSuccess('Sesion inicada correctamente');
+                ->withSuccess('Sesion iniciada correctamente');
         }
 
         return redirect("/")->withError('Cualquier cosa le mandaste!!!!');
@@ -94,6 +94,8 @@ class AuthenticateController extends Controller
      *
      * @return response()
      */
+
+     
     public function create(array $data)
     {
         return User::create([

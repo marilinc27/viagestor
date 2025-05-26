@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nro_colectivo');
             $table->integer('cant_butacas');
             $table->integer('estado');
-            $table->string('servicios[]');
+            $table->string('servicios');
             $table->timestamps();
         });
     }
