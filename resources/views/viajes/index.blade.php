@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    {{ $variable }}
     <section>
 
         <div><a href="{{ route('viajes.create') }}" class="btn btn-primary">Crear viaje</a></div>

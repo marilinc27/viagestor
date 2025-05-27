@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Recorrido;
 use Illuminate\Http\Request;
 use App\Models\Provincia;
+use App\Models\Ciudad;
 use Illuminate\Support\Facades\DB;
 
 class RecorridoController extends Controller
@@ -24,7 +25,12 @@ class RecorridoController extends Controller
     public function create()
     {
         $provincias = Provincia::all();
-        return view('recorridos.create', compact("provincias"));
+        $provinciaOrigen = Provincia::where('id', 26)->first();
+        $ciudadOrigen = Ciudad::where('id', 2602103018)->first();
+        return view('recorridos.create')
+        ->with("provinciaOrigen", $provinciaOrigen)
+        ->with("ciudadOrigen", $ciudadOrigen)
+        ->with("provincias", $provincias);
     }
 
     /**php artisan make:controller ProductoController
@@ -55,7 +61,7 @@ class RecorridoController extends Controller
             $acumuladorIntervalo += $ciudadesParadas[$i]['hsTramo'];
             DB::table('paradas')->insert([
                 'id_recorrido' => $idRecorrido,
-                'id_ciudad_origen' => $ciudadesParadas[$i]['idOrigen'],
+                'id_ciudad_origen' => $origen,
                 'id_ciudad_destino' => $ciudadesParadas[$i]['idDestino'],
                 'orden' => $j,
                 'hs_tramo' => $intervalo,
@@ -152,4 +158,10 @@ class RecorridoController extends Controller
             'data' => $data,
         ]);
    }
+
+    public function datosDestino(Request $request)
+    {
+        $destinos = Recorrido::getRecorridosActivosDestinos($request->idOrigen);
+        return response()->json($destinos);
+    }
 }

@@ -25,7 +25,7 @@ class ColectivoController extends Controller
      */
     public function create()
     {
-        
+
         return view('colectivos.create');
     }
 
@@ -116,4 +116,8 @@ class ColectivoController extends Controller
         ]);
     }
 
+    public function datosColectivosDisponibles (Request $request) {
+        $colectivos = Colectivo::getColectivosHabilitadosDisponibles($request->fechaSalida);
+        return response()->json($colectivos);
+    }
 }

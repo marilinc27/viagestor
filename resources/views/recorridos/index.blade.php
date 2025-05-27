@@ -58,7 +58,7 @@
         var idRecorrido;
         const baseUrl = @json(route('paradas.show', ['parada' => '__ID__']));
         var urlDatosParadas;
-         var urlDatosRecorridos = "{{ route('datosrecorridos') }}";
+        var urlDatosRecorridos = "{{ route('datosrecorridos') }}";
     </script>
     <script src="{{ asset('js/tablas/listarRecorridos.js') }}"></script>
     <script src="{{ asset('js/vistas/recorridos/indexRecorrido.js') }}"></script>

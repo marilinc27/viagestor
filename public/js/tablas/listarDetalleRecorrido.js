@@ -1,8 +1,19 @@
 $(document).ready(function () {
     $(document).on("click", "#btnVerDetalle", function (e) {
         idRecorrido = $(this).data("id");
-
         urlDatosParadas = baseUrl.replace("__ID__", idRecorrido);
+        tablaDetalle(urlDatosParadas);
+    });
+
+    $(document).on("change", "#select-destino", function (e) {
+        idRecorrido = $(this).val();
+        if (idRecorrido !== 0) {
+            urlDatosParadas = baseUrl.replace("__ID__", idRecorrido);
+            tablaDetalle(urlDatosParadas);
+        }
+    });
+
+    function tablaDetalle(urlDatosParadas) {
         $("#tableDetalleRecorrido").DataTable({
             //configuraciones de la tabla
             language: {
@@ -15,7 +26,7 @@ $(document).ready(function () {
                 dataType: "json",
 
                 data: function (d) {
-                    console.log(d);
+
                 },
             },
             searching: false,
@@ -45,5 +56,5 @@ $(document).ready(function () {
                 },
             ],
         });
-    });
+    }
 });

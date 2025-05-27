@@ -11,21 +11,24 @@
         <div class="bg-success w-40">
             <form>
                 @csrf
+                <!-- <div class="col-md-5">
+                    <select class="form-cotrol" name="idaVuelta" id="idaVuelta" disabled>
+                        <option value="IDA"> IDA </option>
+                    </select>
+                </div> -->
                 <div>ORIGEN</div>
                 <div class="row w-100">
+
                     <div class="col-md-5">
                         <select class="selectpicker select-provincia" data-live-search="true"
-                            title="Selecciona una provincia" data-ciudad="#idCiudad1" required>
-                            <option value="0"> Seleccione una provincia</option>
-                            @foreach ($provincias as $prov)
-                                <option value="{{ $prov->id }}">{{ $prov->nombre }}</option>
-                            @endforeach
+                            title="Selecciona una provincia" data-ciudad="#idCiudad1" required disabled>
+                            <option value="{{$provinciaOrigen->id}}"> {{$provinciaOrigen->nombre}} </option>
                         </select>
                     </div>
                     <div class="col-md-5">
                         <select class="selectpicker select-ciudad" data-live-search="true" title="Selecciona una ciudad"
-                            id="idCiudad1" name="origen" required>
-                            <option value="0"> Seleccione una ciudad</option>
+                            id="idCiudad1" name="origen" required disabled>
+                            <option value="{{$ciudadOrigen->id}}"> {{$ciudadOrigen->nombre}} </option>
                         </select>
                     </div>
                 </div>
@@ -118,7 +121,6 @@
 
         });
     </script>
-
     <script src="{{ asset('js/vistas/recorridos/createRecorrido.js') }}">
     </script>
     <script src="{{ asset('js/selects/provincias-ciudades.js') }}"></script>

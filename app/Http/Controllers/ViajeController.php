@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Provincia;
+use App\Models\Recorrido;
 use App\Models\Viaje;
+use App\Models\Colectivo;
 use Illuminate\Http\Request;
 
 class ViajeController extends Controller
@@ -13,7 +15,6 @@ class ViajeController extends Controller
      */
     public function index()
     {
-
         $variable = "hola";
         return view("viajes.index", compact("variable"));
     }
@@ -23,8 +24,10 @@ class ViajeController extends Controller
      */
     public function create()
     {
-        $provincias = Provincia::all();
-        return view('viajes.create',compact("provincias"));
+        $recorridos = Recorrido::getRecorridosActivosOrigen();
+
+        return view('viajes.create')
+        ->with("recorridos", $recorridos);
     }
 
     /**

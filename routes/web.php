@@ -26,10 +26,13 @@ Route::post('/datosviaje',[ViajeController::class,"datosviaje"])->name('datosvia
 //RUTAS PARADAS
 Route::resource('paradas', ParadaController::class);
 
-//RUTAS RECORRIDOSS
+//RUTAS RECORRIDOS
 Route::resource('recorridos', RecorridoController::class);
 Route::post('/recorridos', [RecorridoController::class, 'store'])->name('recorridos.store');
-Route::post('/datosrecorridos',action:[RecorridoController::class, 'getDatosRecorrido'])->name('datosrecorridos');;
+Route::post('/datosrecorridos',action:[RecorridoController::class, 'getDatosRecorrido'])->name('datosrecorridos');
+
+Route::post('/datosdestino',[RecorridoController::class,"datosDestino"])->name('datosdestino');
+
 //RUTAS CIUDADES
 Route::post('/datosciudades',[CiudadController::class,"datosCiudades"])->name('datosciudades');
 
@@ -37,3 +40,4 @@ Route::post('/datosciudades',[CiudadController::class,"datosCiudades"])->name('d
 Route::resource('colectivos', ColectivoController::class);
 Route::post('/colectivos', [ColectivoController::class, 'store'])->name('colectivos.store');
 Route::post('/datosColectivo',[ColectivoController::class,"datosColectivo"])->name('datosColectivo');
+Route::post('/datoscolectivosdisponibles',[ColectivoController::class,"datosColectivosDisponibles"])->name('datoscolectivosdisponibles');

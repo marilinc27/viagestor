@@ -10,7 +10,7 @@ class Colectivo extends Model
     protected $primaryKey = "id";
     protected $fillable = ['nro_colectivo', 'cant_butacas', 'estado', 'servicios'];
 
-    
+
     static function getColectivos()
     {
         $colectivos = Colectivo::select()
@@ -19,7 +19,6 @@ class Colectivo extends Model
 
         return $colectivos;
     }
-
     static function getColectivo($id)
     {
         $colectivo = Colectivo::select()
@@ -29,6 +28,15 @@ class Colectivo extends Model
         return $colectivo;
     }
 
+    public static function getColectivosHabilitadosDisponibles($fechaSalida)
+    {
 
+        $colectivos = self::select('*')
+        ->join('viajes','viajes.id_colectivo','colectivos.id')
+        ->where('estado',4)
+        ->where('viajes.fecha_llegada','>',$fechaSalida)
+        ->get();
+        return $colectivos;
+    }
 
 }
