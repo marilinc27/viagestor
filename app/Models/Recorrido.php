@@ -61,4 +61,13 @@ class Recorrido extends Model
             ->get();
     }
 
+    public static function getHsTotalRecorridos($id_recorrido)
+    {
+        return self::where('id', $id_recorrido)
+            ->select(
+                'recorridos.hs_total'
+            )
+            ->first();
+    }
+
 }

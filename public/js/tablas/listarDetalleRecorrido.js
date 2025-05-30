@@ -7,6 +7,7 @@ $(document).ready(function () {
 
     $(document).on("change", "#select-destino", function (e) {
         idRecorrido = $(this).val();
+        $('#idRecorrido').val(idRecorrido);
         if (idRecorrido !== 0) {
             urlDatosParadas = baseUrl.replace("__ID__", idRecorrido);
             tablaDetalle(urlDatosParadas);

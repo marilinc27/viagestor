@@ -28,13 +28,11 @@ class Colectivo extends Model
         return $colectivo;
     }
 
-    public static function getColectivosHabilitadosDisponibles($fechaSalida)
+    public static function getColectivosHabilitados()
     {
 
         $colectivos = self::select('*')
-        ->join('viajes','viajes.id_colectivo','colectivos.id')
         ->where('estado',4)
-        ->where('viajes.fecha_llegada','>',$fechaSalida)
         ->get();
         return $colectivos;
     }

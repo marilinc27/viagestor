@@ -7,6 +7,8 @@ use App\Models\Recorrido;
 use App\Models\Viaje;
 use App\Models\Colectivo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ViajeController extends Controller
 {
@@ -27,7 +29,7 @@ class ViajeController extends Controller
         $recorridos = Recorrido::getRecorridosActivosOrigen();
 
         return view('viajes.create')
-        ->with("recorridos", $recorridos);
+            ->with("recorridos", $recorridos);
     }
 
     /**
@@ -35,7 +37,26 @@ class ViajeController extends Controller
      */
     public function store(Request $request)
     {
-        return redirect('');
+
+        // CALCULO FECHA DE LLEGADA
+        $hs_total = Recorrido::getHsTotalRecorridos($request->idRecorrido);
+
+        $fechaLlegada = Carbon::createFromFormat('Y-m-d\TH:i', $request->fechaSalida);
+
+        list($horas, $minutos, $segundos) = explode(':', $hs_total['hs_total']);
+
+        $horas = (int) $horas;
+        $minutos = (int) $minutos;
+        $segundos = (int) $segundos;
+
+        $fechaLlegada->addHours($horas)->addMinutes($minutos)->addSeconds($segundos);
+
+        DB::table('viajes')->insert([
+                'id_recorrido' => $request->idRecorrido,
+                'fecha_salida' => $request->fechaSalida,
+                'fecha_llegada' => $fechaLlegada,
+                'estado' => 2
+            ]);
     }
 
     /**
@@ -78,13 +99,27 @@ class ViajeController extends Controller
         $total = $query->count();
 
         // Búsqueda global, o sea por todas las columas
+        $search = $request->input('search.value');
+
+        $query->join('recorridos', 'recorridos.id', 'viajes.id_recorrido')
+            ->join('ciudades as des', 'des.id', 'recorridos.id_ciudad_destino')
+            ->join('ciudades as ori', 'ori.id', 'recorridos.id_ciudad_origen')
+            ->leftJoin('colectivos', 'colectivos.id', 'viajes.id_colectivo')
+            ->select('viajes.id',
+                        'viajes.fecha_salida',
+                        'viajes.estado',
+                        'des.nombre as ciudad_destino',
+                        'ori.nombre as ciudad_origen',
+                        'colectivos.nro_colectivo');
+
         if ($search = $request->input('search.value')) {
             $query->where(function ($q) use ($search) {
-                $q->where('id', 'like', "%{$search}%")
-                    ->orWhere('id_recorrido', 'like', "%{$search}%")
-                    ->orWhere('id_colectivo', 'like', "%{$search}%");
+                $q->where('viajes.id', 'like', "%{$search}%")
+                    ->orWhere('viajes.id_recorrido', 'like', "%{$search}%")
+                    ->orWhere('viajes.id_colectivo', 'like', "%{$search}%");
             });
         }
+
 
         $filtered = $query->count();
 

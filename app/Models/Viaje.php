@@ -37,4 +37,15 @@ class Viaje extends Model
 
         return $viaje;
     }
+
+    static function buscarCoincidenciaViaje($idRecorrido, $fecha)
+    {
+        // $viaje = Viaje::select()
+        //     ->join('recorridos', 'recorridos.id', 'viajes.id_recorrido')
+        //     ->join('colectivos', 'colectivos.id', 'viajes.id_colectivo')
+        //     ->where('id', $id)
+        //     ->first();
+
+        // return $viaje;
+    }
 }

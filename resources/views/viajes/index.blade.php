@@ -5,16 +5,30 @@
 
         <div><a href="{{ route('viajes.create') }}" class="btn btn-primary">Crear viaje</a></div>
         <div>
-            <table id="tablaviajes" class="display">
+            <table id="tablaviajes" class="display table table-bordered">
                 <thead>
-                    <th>ID</th>
-                    <th>Recorrido</th>
-                    <th>Colectivo</th>
-                    <th>Fecha salida</th>
-                    <th>Hora salida</th>
-                    <th>Acciones</th>
+                    <tr class="bg-warning">
+                        <th colspan="1">ID</th>
+                        <th colspan="2">Recorrido</th>
+                        <th rowspan="2">Colectivo</th>
+                        <th rowspan="2">Fecha y hora de salida</th>
+                        <th rowspan="2">Estado</th>
+                    </tr>
+                    <tr class="bg-info">
+                        <th></th>
+                        <th>ORIGEN</th>
+                        <th>DESTINO</th>
+                    </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>CR</td>
+                        <td>TRELEW</td>
+                        <td>null</td>
+                        <td>null</td>
+                        <td>null</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -25,5 +39,5 @@
     <script>
         var urlDatosViaje = "{{ route('datosviaje') }}";
     </script>
-    <script src="{{ asset('js/tablas/viajes.js') }}"></script>
+    <script src="{{ asset('js/tablas/listarViajes.js') }}"></script>
 @endpush

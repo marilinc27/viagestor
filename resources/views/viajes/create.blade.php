@@ -7,7 +7,7 @@
 @section('content')
     <section class="d-flex w-100">
         <div class="w-50">
-            <form id="form" class="col-12 w-75" action="{{ route('viajes.store') }}" type="POST">
+            <form action="{{ route('viajes.store') }}" method="POST">
                 @csrf
                 <div class="d-flex">
                     <div>
@@ -29,17 +29,17 @@
                 </div>
                 <div class="form-group">
                     <label for="">Fecha de salida</label>
-                    <input type="date" class="form-control" id="fechaSalida" name="fechaSalida">
+                    <input type="datetime-local" class="form-control" name="fechaSalida" id="fechaSalida">
                 </div>
-                <div class="form-group">
-                    <select id="select-colectivo" disabled>
-                        <option value="">Seleccione un colectivo</option>
-                    </select>
-                    <small id="colectivoHelp" class="">Seleccione un rercorrido y fecha para consultar disponibilidad.</small>
-                </div>
-                <div class="form-group">
-                    <label for="">Hora de salida</label>
-                    <input type="time" class="form-control" id="" disabled>
+                <!-- <div class="form-group">
+                        <select id="select-colectivo" disabled>
+                            <option value="">Seleccione un colectivo</option>
+                        </select>
+                        <small id="colectivoHelp" class="">Seleccione un rercorrido y fecha para consultar disponibilidad.</small>
+                    </div> -->
+                    <input type="hidden" class="form-control" name="idRecorrido" id="idRecorrido">
+                <div>
+                    <button type="submit" id="btnGuardar" class="btn btn-primary">Guardar</button>
                 </div>
             </form>
         </div>
@@ -66,11 +66,10 @@
         const baseUrl = @json(route('paradas.show', ['parada' => '__ID__']));
         var urlDatosOrigen = "{{ route('datosdestino') }}";
         var urlDatosCiudades = "{{ route('datosciudades') }}";
-        var urlDatosColectivos = "{{ route('datoscolectivosdisponibles') }}";
         var urlDatosParadas;
         var idRecorrido;
     </script>
-    <script src="{{ asset('js/selects/colectivos.js') }}"></script>
+    <!-- <script src="{{ asset('js/selects/colectivos.js') }}"></script> -->
     <script src="{{ asset('js/selects/destinos.js') }}"></script>
     <script src="{{ asset('js/vistas/viajes/createViaje.js') }}"></script>
     <script src="{{ asset('js/tablas/listarDetalleRecorrido.js') }}"></script>

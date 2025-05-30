@@ -5,8 +5,6 @@ $(document).ready(function () {
         let fechaSalida = $('#fechaSalida').val();
         let selectColectivo = $("#select-colectivo");
 
-        console.log(fechaSalida);
-        console.log(urlDatosColectivos);
         $(selectColectivo).select2({
             ajax: {
                 url: urlDatosColectivos,
