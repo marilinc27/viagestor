@@ -30,7 +30,7 @@ $(document).ready(function () {
                     if (row.nro_colectivo) {
                         return row.nro_colectivo;
                     } else {
-                        return 'Sin asignar';
+                        return `<span class="text-secondary">Sin asignar</span>`;
                     }
                 },
             },
