@@ -9,37 +9,74 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/colores.css') }}">
     @stack('styles')
+
+    <style>
+        .submenu {
+            display: none;
+            padding-left: 1rem;
+        }
+
+        .submenu.show {
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="sidebar">
+    <div class="sidebar d-flex flex-column min-vh-100 bg-verde-oscuro p-0">
         <div class="mb-4 text-center">
             <a href="{{ route('home') }}">
-                <img src="{{ asset('img/logotipoicono.png') }}" alt="Logo" width="100">
+                <img src="{{ asset('img/logotipoiconoblanco.png') }}" alt="Logo" width="100" class="w-75">
             </a>
         </div>
 
-        <nav class="nav flex-column">
-            <a class="nav-link" href="{{ route('home') }}">{{ __('Pasajes') }}</a>
-            <a class="nav-link" href="{{ route('colectivos.index') }}">{{ __('Colectivos') }}</a>
-            <a class="nav-link" href="{{ route('home') }}">{{ __('Reportes') }}</a>
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">{{ __('Viajes') }}</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{ route('viajes.index') }}">Listado de viajes</a></li>
-                    <li><a class="dropdown-item" href="{{ route('recorridos.index') }}">Listado de recorridos</a></li>
+        <nav class="nav flex-column d-flex justify-content h-100">
+            <a class="nav-link {{ request()->routeIs('home') ? 'active bg-verde' : '' }}" href="{{ route('home') }}">
+                <i class="bi bi-house-door me-2"></i>Inicio
+            </a>
+            <a class="nav-link {{ request()->routeIs('pasajes.index') ? 'active bg-verde' : '' }}" href="{{ route('pasajes.index') }}">
+                <i class="bi bi-ticket-perforated me-2"></i>{{ __('Venta de pasajes') }}
+            </a>
+            <div>
+                <a class="nav-link menu-toggle" href="javascript:void(0)">
+                 <i class="bi bi-truck-front me-2"></i>{{ __('Gestionar recorridos y viajes') }}</a>
+                <ul class="submenu list-unstyled">
+                    <li><a class="nav-link" href="{{ route('viajes.create') }}">Registrar viaje</a></li>
+                    <li><a class="nav-link" href="{{ route('viajes.index') }}">Historial de viajes</a></li>
+                    <li><a class="nav-link" href="{{ route('recorridos.index') }}">Registrar recorrido</a></li>
+                    <li><a class="nav-link" href="{{ route('colectivos.index') }}">Registrar colectivos</a></li>
                 </ul>
             </div>
-            <a class="nav-link" href="{{ route('logout') }}"
-                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                {{ __('Cerrar sesión') }}
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="GET" class="d-none">
-                @csrf
-            </form>
+            <div>
+                <a class="nav-link menu-toggle" href="javascript:void(0)">
+                   <i class="bi bi-bar-chart-line me-2"></i>{{ __('Reportes') }}</a>
+                <ul class="submenu list-unstyled">
+                    <li><a class="nav-link" href="#">Reporte 1</a></li>
+                </ul>
+            </div>
+            <div>
+                <a class="nav-link menu-toggle" href="javascript:void(0)">
+                 <i class="bi bi-gear me-2"></i>{{ __('Administrador') }}</a>
+                <ul class="submenu list-unstyled">
+                    <li><a class="nav-link" href="#">Registrar empleado</a></li>
+                    <li><a class="nav-link" href="#">Gestionar descuentos</a></li>
+                </ul>
+            </div>
+            <div class="mt-auto">
+                <a class="nav-link" href="{{ route('logout') }}"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="bi bi-box-arrow-right me-2"></i>
+                    {{ __('Cerrar sesión') }}
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="GET" class="d-none">
+                    @csrf
+                </form>
+            </div>
         </nav>
     </div>
 
@@ -63,16 +100,30 @@
         </div>
     </main>
 
-    <footer class="text-center py-3 bg-light border-top">
+    <!-- <footer class="text-center py-3 bg-light border-top">
         <p class="mb-0">&copy; 2025 Viagestor. Todos los derechos reservados.</p>
-    </footer>
+    </footer> -->
 
     {{-- JS --}}
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    @stack('scripts')
-</body>
 
+    <script>
+        $(document).ready(function () {
+
+            $('.submenu').hide(); // Asegura que estén ocultos al cargar
+
+            $('.menu-toggle').on('click', function () {
+                $(this).next('.submenu').slideToggle(200); // Despliegue suave en 200ms
+            });
+            event.preventDefault();
+        });
+    </script>
+
+    @stack('scripts')
+
+</body>
 </html>
