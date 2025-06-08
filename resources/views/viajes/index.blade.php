@@ -21,14 +21,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>CR</td>
-                        <td>TRELEW</td>
-                        <td>null</td>
-                        <td>null</td>
-                        <td>null</td>
-                    </tr>
                 </tbody>
             </table>
         </div>

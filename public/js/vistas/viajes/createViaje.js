@@ -1,19 +1,30 @@
 $(document).ready(function () {
-    // $(document).on("change", "#fechaSalida", function (e) {
-    //     $.ajax({
-    //         url: "ruta/del/servidor.php", // o una ruta en tu backend
-    //         method: "POST", // o 'GET'
-    //         data: {
-    //             nombre: "Juan",
-    //             edad: 30,
-    //         },
-    //         success: function (respuesta) {
-    //             console.log("Respuesta del servidor:", respuesta);
-    //         },
-    //         error: function (xhr, status, error) {
-    //             console.error("Error en la solicitud:", error);
-    //         },
-    //     });
-    // });
+$(document).on('click', "#btnGuardar", function(e) {
+e.preventDefault();
+var arrayPrecios =[];
+$('input[name="precios[]"]').each(function(index, element) {
+    let idParada = $(this).data('id');
+    let precio = $(element).val();
+
+    paradaPrecio = {
+        idParada: idParada,
+        precio: precio
+    }
+    if (precio) {
+        $('#'+idParada).removeClass('is-invalid');
+        console.log(precio);
+        arrayPrecios.push(paradaPrecio);
+    } else {
+        $('#'+idParada).addClass('is-invalid');
+        return;
+    }
+
+    $('#preciosFinal').val(JSON.stringify(arrayPrecios));
+
+    $('#formViajes').submit();
+});
+
+});
+
 
 });

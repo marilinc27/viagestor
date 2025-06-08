@@ -37,6 +37,14 @@ class ViajeController extends Controller
      */
     public function store(Request $request)
     {
+        $paradasPrecios= json_decode($request->precios, true);
+        foreach ($paradasPrecios as $precio) {
+            DB::table('precios_paradas')->insert([
+                'id_parada' => $precio['idParada'],
+                'fecha_salida' => $request->fechaSalida,
+                'precio' => $precio['precio']
+            ]);
+        }
 
         // CALCULO FECHA DE LLEGADA
         $hs_total = Recorrido::getHsTotalRecorridos($request->idRecorrido);
