@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreColectivoRequest;
-use App\Models\colectivo;
+use App\Models\Colectivo;
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ColectivoController extends Controller
 {
@@ -36,14 +36,14 @@ class ColectivoController extends Controller
     {
         $validatedData = $request->validated();
 
-    Colectivo::create([
-        'nro_colectivo' => $validatedData['nro_colectivo'],
-        'cant_butacas' => $validatedData['cant_butacas'],
-        'estado' => '1',
-        'servicios' => $request->input('servicios') ?? '',
-    ]);
+        Colectivo::create([
+            'nro_colectivo' => $validatedData['nro_colectivo'],
+            'cant_butacas' => $validatedData['cant_butacas'],
+            'estado' => '1',
+            'servicios' => $request->input('servicios') ?? '',
+        ]);
 
-    return redirect()->route('colectivos.index')->with('success', 'Colectivo creado correctamente.');
+        return redirect()->route('colectivos.index')->with('success', 'Colectivo creado correctamente.');
     }
 
     /**
@@ -59,7 +59,7 @@ class ColectivoController extends Controller
      */
     public function edit(Colectivo $colectivo)
     {
-        //
+        return view('colectivos.edit', compact('colectivo'));        
     }
 
     /**
@@ -67,15 +67,31 @@ class ColectivoController extends Controller
      */
     public function update(Request $request, Colectivo $colectivo)
     {
-        //
+        $request->validate([
+            'nro_colectivo' => 'required|unique:colectivos,nro_colectivo,' . $colectivo->id,
+            'cant_butacas' => 'required|integer|min:1',
+            'servicios' => 'nullable|string',
+        ]);
+
+        $colectivo->update([
+            'nro_colectivo' => $request->input('nro_colectivo'),
+            'cant_butacas' => $request->input('cant_butacas'),
+            'servicios' => $request->input('servicios'),
+        ]);
+
+        return redirect()->route('colectivos.index')->with('success', 'Colectivo actualizado correctamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Colectivo $colectivo)
+    public function destroy(Colectivo $colectivo): RedirectResponse
     {
-        //
+        $colectivo->estado = '2';
+        $colectivo->save();
+
+        return redirect()->route('colectivos.index')->with('success', 'Colectivo dado de baja correctamente.');
+        //return response()->json(['success' => true, 'message' => 'Colectivo dado de baja correctamente.']);
     }
 
     public function datosColectivo(Request $request){

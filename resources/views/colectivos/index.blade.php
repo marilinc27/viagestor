@@ -6,7 +6,7 @@
 <section>
 
     <a href="{{ route('colectivos.create') }}" class="btn btn-primary">Crear Colectivo</a>
-     <table id="tablacolectivos" class="display">
+     <table id="tablacolectivos" class="display table table-bordered">
             <thead>
 
                 <th>ID</th>
@@ -25,6 +25,7 @@
 @push('scripts')
     <script>
         var urlDatosColectivo = "{{ route('datosColectivo') }}";
+        const baseUrlEdit = "{{ url('colectivos') }}";
     </script>
     <script src="{{ asset('js/tablas/colectivos.js') }}"></script>
 @endpush

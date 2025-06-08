@@ -5,7 +5,7 @@
         <main>
             <div class="row g-5">
                 <div class="col-md-7 col-lg-8">
-                    <h4 class="mb-3">Ingreso de un nuevo colectivo</h4>
+                    <h4 class="mb-3">Editar colectivo</h4>
                     @include('colectivos._form')
                 </div>
             </div>
