@@ -29,7 +29,7 @@
 <body>
 
     <div class="sidebar d-flex flex-column min-vh-100 bg-verde-oscuro p-0">
-        <div class="mb-4 text-center">
+        <div class="text-center">
             <a href="{{ route('home') }}">
                 <img src="{{ asset('img/logotipoiconoblanco.png') }}" alt="Logo" width="100" class="w-75">
             </a>
@@ -80,9 +80,9 @@
         </nav>
     </div>
 
-    <main class="main-content">
+    <main class="main-content bg-gris-claro">
         <div class="p-5 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-5">
+            <div class="container-fluid">
                 @if (session('success'))
                     <div class="alert alert-success" role="alert">
                         {{ session('success') }}
@@ -100,10 +100,6 @@
         </div>
     </main>
 
-    <!-- <footer class="text-center py-3 bg-light border-top">
-        <p class="mb-0">&copy; 2025 Viagestor. Todos los derechos reservados.</p>
-    </footer> -->
-
     {{-- JS --}}
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -119,7 +115,6 @@
             $('.menu-toggle').on('click', function () {
                 $(this).next('.submenu').slideToggle(200); // Despliegue suave en 200ms
             });
-            event.preventDefault();
         });
     </script>
 
