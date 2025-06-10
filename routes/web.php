@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\ColectivoController;
 use App\Http\Controllers\ParadaController;
+use App\Http\Controllers\PasajeController;
 
 // Route::get('/', function () {
 //     return view('');
@@ -40,3 +41,5 @@ Route::post('/datosciudades',[CiudadController::class,"datosCiudades"])->name('d
 Route::resource('colectivos', ColectivoController::class);
 Route::post('/datosColectivo',[ColectivoController::class,"datosColectivo"])->name('datosColectivo');
 Route::post('/datoscolectivosdisponibles',[ColectivoController::class,"datosColectivosDisponibles"])->name('datoscolectivosdisponibles');
+
+Route::resource('pasajes', PasajeController::class);

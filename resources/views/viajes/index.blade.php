@@ -2,17 +2,30 @@
 
 @section('content')
     <section>
+        <div class="w-100">
+            <form id="filtroFechas" class="row g-3">
+                <div class="col-md-4">
+                    <label for="fechaDesde" class="form-label">Fecha desde</label>
+                    <input type="date" class="form-control" id="fechaDesde" name="fecha_desde">
+                </div>
+                <div class="col-md-4">
+                    <label for="fechaHasta" class="form-label">Fecha hasta</label>
+                    <input type="date" class="form-control" id="fechaHasta" name="fecha_hasta">
+                </div>
+            </form>
+        </div>
 
-        <div><a href="{{ route('viajes.create') }}" class="btn btn-primary">Crear viaje</a></div>
-        <div>
+        <div class="w-100">
             <table id="tablaviajes" class="display table table-bordered">
                 <thead>
                     <tr class="bg-warning">
                         <th colspan="1">ID</th>
                         <th colspan="2">Recorrido</th>
                         <th rowspan="2">Colectivo</th>
-                        <th rowspan="2">Fecha y hora de salida</th>
+                        <th rowspan="2">Fecha de salida</th>
+                        <th rowspan="2">Hora de salida</th>
                         <th rowspan="2">Estado</th>
+                        <th rowspan="2">Acciones</th>
                     </tr>
                     <tr class="bg-info">
                         <th></th>
@@ -32,4 +45,5 @@
         var urlDatosViaje = "{{ route('datosviaje') }}";
     </script>
     <script src="{{ asset('js/tablas/listarViajes.js') }}"></script>
+    <script src="{{ asset('js/moment.js') }}"></script>
 @endpush

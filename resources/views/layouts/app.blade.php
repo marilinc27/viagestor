@@ -47,7 +47,7 @@
                  <i class="bi bi-truck-front me-2"></i>{{ __('Gestionar recorridos y viajes') }}</a>
                 <ul class="submenu list-unstyled">
                     <li><a class="nav-link" href="{{ route('viajes.create') }}">Registrar viaje</a></li>
-                    <li><a class="nav-link" href="{{ route('viajes.index') }}">Historial de viajes</a></li>
+                    <li><a class="nav-link" href="{{ route('viajes.index') }}">Gestion e historial de viajes</a></li>
                     <li><a class="nav-link" href="{{ route('recorridos.index') }}">Registrar recorrido</a></li>
                     <li><a class="nav-link" href="{{ route('colectivos.index') }}">Registrar colectivos</a></li>
                 </ul>

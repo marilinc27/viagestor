@@ -3,6 +3,9 @@
     <!-- PROPIOS -->
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="/path/to/select2.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 @endpush
 @section('content')
     <div class="w-100 d-flex">
@@ -27,12 +30,22 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="">Fecha de salida</label>
+                    <label for="">Fecha y hora de salida</label>
                     <input type="datetime-local" class="form-control w-100" name="fechaSalida" id="fechaSalida">
                 </div>
                 <input type="hidden" class="form-control" name="idRecorrido" id="idRecorrido">
 
                 <input type="hidden" class="form-control" name="precios" id="preciosFinal">
+                <div class="mb-3">
+                    <label for="">Disponibilidad de pasajes</label>
+                    <select name="pasajesDisponibles" id="pasajesDisponibles" class="form-select">
+                        <option value="0">Seleccione un rango</option>
+                        <option value="30">20 - 30 asientos</option>
+                        <option value="40">31 - 40 asientos</option>
+                        <option value="50">41 - 50 asientos</option>
+                        <option value="60">51 - 60 asientos</option>
+                    </select>
+                </div>
                 <div>
                     <button type="submit" id="btnGuardar" class="btn btn-primary">Guardar</button>
                 </div>

@@ -9,6 +9,7 @@ $(document).ready(function () {
 
         $(selectDestino).select2({
             ajax: {
+                theme: 'bootstrap4',
                 url: urlDatosOrigen,
                 type: "POST",
                 data: function (params) {

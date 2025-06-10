@@ -63,6 +63,7 @@ class ViajeController extends Controller
                 'id_recorrido' => $request->idRecorrido,
                 'fecha_salida' => $request->fechaSalida,
                 'fecha_llegada' => $fechaLlegada,
+                'pasajes_disponilbes' => $request->pasajesDisponibles,
                 'estado' => 2
             ]);
     }
@@ -112,13 +113,34 @@ class ViajeController extends Controller
         $query->join('recorridos', 'recorridos.id', 'viajes.id_recorrido')
             ->join('ciudades as des', 'des.id', 'recorridos.id_ciudad_destino')
             ->join('ciudades as ori', 'ori.id', 'recorridos.id_ciudad_origen')
+            ->join('estados as e', 'e.id', 'recorridos.estado')
             ->leftJoin('colectivos', 'colectivos.id', 'viajes.id_colectivo')
             ->select('viajes.id',
                         'viajes.fecha_salida',
-                        'viajes.estado',
+                        'e.estado',
                         'des.nombre as ciudad_destino',
                         'ori.nombre as ciudad_origen',
-                        'colectivos.nro_colectivo');
+                        'colectivos.nro_colectivo'
+                    )
+            ->selectRaw("DATE(viajes.fecha_salida) as fecha")
+            ->selectRaw("TO_CHAR(viajes.fecha_salida, 'HH24:MI') as hora")
+            ->whereNull('colectivos.nro_colectivo')
+            ->where('viajes.estado', 2);
+
+        // $query->join('recorridos', 'recorridos.id', 'viajes.id_recorrido')
+        //     ->join('ciudades as des', 'des.id', 'recorridos.id_ciudad_destino')
+        //     ->join('ciudades as ori', 'ori.id', 'recorridos.id_ciudad_origen')
+        //     ->join('estados as e', 'e.id', 'recorridos.estado')
+        //     ->leftJoin('colectivos', 'colectivos.id', 'viajes.id_colectivo')
+        //     ->select('viajes.id',
+        //                 'viajes.fecha_salida',
+        //                 'e.estado',
+        //                 'des.nombre as ciudad_destino',
+        //                 'ori.nombre as ciudad_origen',
+        //                 'colectivos.nro_colectivo'
+        //             )
+        //     ->selectRaw("DATE(viajes.fecha_salida) as fecha")
+        //     ->selectRaw("TO_CHAR(viajes.fecha_salida, 'HH24:MI') as hora");
 
         if ($search = $request->input('search.value')) {
             $query->where(function ($q) use ($search) {
