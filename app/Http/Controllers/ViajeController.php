@@ -108,12 +108,16 @@ class ViajeController extends Controller
         $total = $query->count();
 
         // Búsqueda global, o sea por todas las columas
-        $search = $request->input('search.value');
+        $desde = $request->input('fechaDesde');
+        $hasta = $request->input('fechaHasta');
+
+        
+
 
         $query->join('recorridos', 'recorridos.id', 'viajes.id_recorrido')
             ->join('ciudades as des', 'des.id', 'recorridos.id_ciudad_destino')
             ->join('ciudades as ori', 'ori.id', 'recorridos.id_ciudad_origen')
-            ->join('estados as e', 'e.id', 'recorridos.estado')
+            ->join('estados as e', 'e.id', 'viajes.estado')
             ->leftJoin('colectivos', 'colectivos.id', 'viajes.id_colectivo')
             ->select('viajes.id',
                         'viajes.fecha_salida',
@@ -142,6 +146,10 @@ class ViajeController extends Controller
         //     ->selectRaw("DATE(viajes.fecha_salida) as fecha")
         //     ->selectRaw("TO_CHAR(viajes.fecha_salida, 'HH24:MI') as hora");
 
+        if ($desde && $hasta) {
+            $query->whereBetween(DB::raw('DATE(viajes.fecha_salida)'), [$desde, $hasta]);
+        }
+        
         if ($search = $request->input('search.value')) {
             $query->where(function ($q) use ($search) {
                 $q->where('viajes.id', 'like', "%{$search}%")

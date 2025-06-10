@@ -25,7 +25,6 @@ $(document).ready(function () {
                 url: urlDatosParadas,
                 type: "GET",
                 dataType: "json",
-
                 data: function (d) {},
             },
             searching: false,

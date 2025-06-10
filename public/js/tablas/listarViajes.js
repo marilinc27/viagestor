@@ -1,8 +1,23 @@
 $(document).ready(function () {
+    $(document).on("change", "#fechaDesde", function (e) {
+        fechaDesde = $("#fechaDesde").val();
+        let fHasta = $("#fechaHasta").val();
+        let fechaHoy = moment().format('YYYY-MM-DD');
+        fechaHasta = (!fHasta) ? fechaHoy : fHasta
+        $("#fechaHasta").val(fechaHoy);
+    });
+
+    $(document).on("change", "#fechaHasta", function (e) {
+        if ( $("#fechaDesde").val()) {
+            fechaDesde = $("#fechaDesde").val();
+            fechaHasta =  $("#fechaHasta").val();
+        }
+    });
+
+
     let table = new DataTable("#tablaviajes", {
         processing: true,
         serverSide: true,
-        searching: true,
         lengthChange: false,
         language: {
             url: "languaje/espanoltabla.json",
@@ -12,6 +27,10 @@ $(document).ready(function () {
             type: "POST",
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"), // Se añade el token CSRF
+            },
+            data: function (d) {
+                d.fechaDesde = fechaDesde;
+                d.fechaHasta = fechaHasta;
             },
         },
         type: "post",
@@ -38,9 +57,9 @@ $(document).ready(function () {
             },
             {
                 data: null,
-                render: function(data,type,row) {
-                    return moment(row.fecha).format('DD/MM/YYYY');
-                }
+                render: function (data, type, row) {
+                    return moment(row.fecha).format("DD/MM/YYYY");
+                },
             },
             {
                 data: "hora",

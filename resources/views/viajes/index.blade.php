@@ -6,11 +6,11 @@
             <form id="filtroFechas" class="row g-3">
                 <div class="col-md-4">
                     <label for="fechaDesde" class="form-label">Fecha desde</label>
-                    <input type="date" class="form-control" id="fechaDesde" name="fecha_desde">
+                    <input type="date" class="form-control" id="fechaDesde" name="fechaDesde">
                 </div>
                 <div class="col-md-4">
                     <label for="fechaHasta" class="form-label">Fecha hasta</label>
-                    <input type="date" class="form-control" id="fechaHasta" name="fecha_hasta">
+                    <input type="date" class="form-control" id="fechaHasta" name="fechaHasta">
                 </div>
             </form>
         </div>
@@ -43,6 +43,8 @@
 @push('scripts')
     <script>
         var urlDatosViaje = "{{ route('datosviaje') }}";
+        var fechaDesde;
+        var fechaHasta;
     </script>
     <script src="{{ asset('js/tablas/listarViajes.js') }}"></script>
     <script src="{{ asset('js/moment.js') }}"></script>
