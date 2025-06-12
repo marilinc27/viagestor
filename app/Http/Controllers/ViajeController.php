@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Provincia;
+use App\Models\Colectivo;
 use App\Models\Recorrido;
 use App\Models\Viaje;
-use App\Models\Colectivo;
+use App\Models\Estado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -17,8 +17,8 @@ class ViajeController extends Controller
      */
     public function index()
     {
-        $variable = "hola";
-        return view("viajes.index", compact("variable"));
+        $estados = Estado::getEstadosViaje();
+        return view("viajes.index", compact("estados"));
     }
 
     /**
@@ -27,7 +27,6 @@ class ViajeController extends Controller
     public function create()
     {
         $recorridos = Recorrido::getRecorridosActivosOrigen();
-
         return view('viajes.create')
             ->with("recorridos", $recorridos);
     }
@@ -37,7 +36,7 @@ class ViajeController extends Controller
      */
     public function store(Request $request)
     {
-        $paradasPrecios= json_decode($request->precios, true);
+        $paradasPrecios = json_decode($request->precios, true);
         foreach ($paradasPrecios as $precio) {
             DB::table('precios_paradas')->insert([
                 'id_parada' => $precio['idParada'],
@@ -60,12 +59,12 @@ class ViajeController extends Controller
         $fechaLlegada->addHours($horas)->addMinutes($minutos)->addSeconds($segundos);
 
         DB::table('viajes')->insert([
-                'id_recorrido' => $request->idRecorrido,
-                'fecha_salida' => $request->fechaSalida,
-                'fecha_llegada' => $fechaLlegada,
-                'pasajes_disponilbes' => $request->pasajesDisponibles,
-                'estado' => 2
-            ]);
+            'id_recorrido' => $request->idRecorrido,
+            'fecha_salida' => $request->fechaSalida,
+            'fecha_llegada' => $fechaLlegada,
+            'pasajes_disponibles' => $request->pasajesDisponibles,
+            'estado' => 2
+        ]);
     }
 
     /**
@@ -87,9 +86,23 @@ class ViajeController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
+
     public function update(Request $request, Viaje $viaje)
     {
-        //
+        $fechaLlegada = $this->calculoFechaLlegada($request->idRecorrido, $request->fechaSalida);
+
+        DB::table('viajes')
+            ->where('id', $request->idViaje) // Reemplazá $id por el ID del viaje que querés actualizar
+            ->update([
+                'id_colectivo' => $request->idColectivo,
+                'fecha_salida' => $request->fechaSalida,
+                'fecha_llegada' => $fechaLlegada,
+                'estado' => $request->estadoActual,
+                'pasajes_disponibles' => $request->pasajesDisponiblesActual
+            ]);
+
+        Colectivo::updateEstado($request->idColectivo, 6);
     }
 
     /**
@@ -100,80 +113,77 @@ class ViajeController extends Controller
         //
     }
 
-
     public function datosViaje(Request $request)
     {
         $query = Viaje::query();
+        $queryCompleto = Viaje::query();
 
         $total = $query->count();
 
-        // Búsqueda global, o sea por todas las columas
         $desde = $request->input('fechaDesde');
         $hasta = $request->input('fechaHasta');
 
-        
-
-
+        // Configurar $query
         $query->join('recorridos', 'recorridos.id', 'viajes.id_recorrido')
             ->join('ciudades as des', 'des.id', 'recorridos.id_ciudad_destino')
             ->join('ciudades as ori', 'ori.id', 'recorridos.id_ciudad_origen')
             ->join('estados as e', 'e.id', 'viajes.estado')
             ->leftJoin('colectivos', 'colectivos.id', 'viajes.id_colectivo')
-            ->select('viajes.id',
-                        'viajes.fecha_salida',
-                        'e.estado',
-                        'des.nombre as ciudad_destino',
-                        'ori.nombre as ciudad_origen',
-                        'colectivos.nro_colectivo'
-                    )
-            ->selectRaw("DATE(viajes.fecha_salida) as fecha")
-            ->selectRaw("TO_CHAR(viajes.fecha_salida, 'HH24:MI') as hora")
-            ->whereNull('colectivos.nro_colectivo')
-            ->where('viajes.estado', 2);
+            ->select(
+                'viajes.id',
+                'viajes.id_recorrido',
+                'viajes.fecha_salida as fh_salida',
+                'viajes.pasajes_disponibles',
+                'e.id as id_estado',
+                'e.estado',
+                'des.nombre as ciudad_destino',
+                'ori.nombre as ciudad_origen',
+                'colectivos.nro_colectivo',
+                'colectivos.cant_butacas',
+                'colectivos.id as id_colectivo'
+            )
+            ->selectRaw("DATE(viajes.fecha_salida) as fecha_s")
+            ->selectRaw("TO_CHAR(viajes.fecha_salida, 'HH24:MI') as hora_s")
+            ->selectRaw("DATE(viajes.fecha_llegada) as fecha_ll")
+            ->selectRaw("TO_CHAR(viajes.fecha_llegada, 'HH24:MI') as hora_ll")
+            ->whereIn('viajes.estado', [2, 7]);
 
-        // $query->join('recorridos', 'recorridos.id', 'viajes.id_recorrido')
-        //     ->join('ciudades as des', 'des.id', 'recorridos.id_ciudad_destino')
-        //     ->join('ciudades as ori', 'ori.id', 'recorridos.id_ciudad_origen')
-        //     ->join('estados as e', 'e.id', 'recorridos.estado')
-        //     ->leftJoin('colectivos', 'colectivos.id', 'viajes.id_colectivo')
-        //     ->select('viajes.id',
-        //                 'viajes.fecha_salida',
-        //                 'e.estado',
-        //                 'des.nombre as ciudad_destino',
-        //                 'ori.nombre as ciudad_origen',
-        //                 'colectivos.nro_colectivo'
-        //             )
-        //     ->selectRaw("DATE(viajes.fecha_salida) as fecha")
-        //     ->selectRaw("TO_CHAR(viajes.fecha_salida, 'HH24:MI') as hora");
+        // Copiar la misma estructura a $queryCompleto
+        $queryCompleto = clone $query;
 
         if ($desde && $hasta) {
             $query->whereBetween(DB::raw('DATE(viajes.fecha_salida)'), [$desde, $hasta]);
+            $queryCompleto->whereBetween(DB::raw('DATE(viajes.fecha_salida)'), [$desde, $hasta]);
         }
-        
-        if ($search = $request->input('search.value')) {
-            $query->where(function ($q) use ($search) {
-                $q->where('viajes.id', 'like', "%{$search}%")
-                    ->orWhere('viajes.id_recorrido', 'like', "%{$search}%")
-                    ->orWhere('viajes.id_colectivo', 'like', "%{$search}%");
+
+        $search = $request->input('search.value');
+
+        if ($search) {
+            $queryCompleto->where(function ($q) use ($search) {
+                $q->where('des.nombre', 'ilike', "{$search}%")
+                    ->orWhere('ori.nombre', 'ilike', "{$search}%");
             });
+
+            $filtered = $queryCompleto->count();
+            $finalQuery = $queryCompleto;
+        } else {
+            $filtered = $query->count();
+            $finalQuery = $query;
         }
-
-
-        $filtered = $query->count();
 
         // Ordenar
         $orderColIndex = $request->input('order.0.column');
         $orderDir = $request->input('order.0.dir');
         $orderColName = $request->input("columns.$orderColIndex.data");
         if ($orderColName) {
-            $query->orderBy($orderColName, $orderDir);
+            $finalQuery->orderBy($orderColName, $orderDir);
         }
 
         // Paginación
         $start = $request->input('start', 0);
         $length = $request->input('length', 10);
 
-        $data = $query->skip($start)->take($length)->get();
+        $data = $finalQuery->skip($start)->take($length)->get();
 
         return response()->json([
             'draw' => intval($request->input('draw')),
@@ -182,4 +192,20 @@ class ViajeController extends Controller
             'data' => $data,
         ]);
     }
+
+    public function calculoFechaLlegada($idRecorrido, $fechaSalida)
+    {
+        $hs_total = Recorrido::getHsTotalRecorridos($idRecorrido);
+
+        $fechaLlegada = Carbon::createFromFormat('Y-m-d\TH:i', $fechaSalida);
+
+        list($horas, $minutos, $segundos) = explode(':', $hs_total['hs_total']);
+
+        $horas = (int) $horas;
+        $minutos = (int) $minutos;
+        $segundos = (int) $segundos;
+
+        return $fechaLlegada->addHours($horas)->addMinutes($minutos)->addSeconds($segundos);
+    }
+
 }

@@ -116,7 +116,6 @@
             animation: 150,
             onEnd: function () {
                 const orden = [...el.children].map(item => item.dataset.id);
-                console.log('Nuevo orden:', orden);
             }
 
         });

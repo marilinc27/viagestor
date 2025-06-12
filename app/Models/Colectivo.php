@@ -28,13 +28,30 @@ class Colectivo extends Model
         return $colectivo;
     }
 
-    public static function getColectivosHabilitados()
+    public static function datosColectivosDisponibles($cantPasajes, $id)
     {
+        $query = self::select(
+            'colectivos.id',
+            'colectivos.nro_colectivo',
+            'colectivos.cant_butacas',
+            'e.estado'
+        )
+            ->join('estados as e', 'e.id', 'colectivos.estado')
+            ->where('colectivos.estado', 4)
+            ->where('colectivos.cant_butacas', '>=', (int) $cantPasajes);
 
-        $colectivos = self::select('*')
-        ->where('estado',4)
-        ->get();
-        return $colectivos;
+        if (!is_null($id)) {
+            $query->where('colectivos.id', '!=', $id);
+        }
+
+        return $query->get();
+    }
+
+    public static function updateEstado($id, $estado) {
+        return self::where('id', $id)
+        ->update([
+                'estado' => $estado,
+            ]);
     }
 
 }

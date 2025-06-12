@@ -59,7 +59,7 @@ class ColectivoController extends Controller
      */
     public function edit(Colectivo $colectivo)
     {
-        return view('colectivos.edit', compact('colectivo'));        
+        return view('colectivos.edit', compact('colectivo'));
     }
 
     /**
@@ -132,8 +132,8 @@ class ColectivoController extends Controller
         ]);
     }
 
-    public function datosColectivosDisponibles (Request $request) {
-        $colectivos = Colectivo::getColectivosHabilitadosDisponibles($request->fechaSalida);
+    public function datosColectivosDisponibles(Request $request) {
+        $colectivos = Colectivo::datosColectivosDisponibles($request->cantPasajes, $request->idColectivo);
         return response()->json($colectivos);
     }
 }
