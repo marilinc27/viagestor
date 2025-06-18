@@ -8,6 +8,8 @@ use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\ColectivoController;
 use App\Http\Controllers\ParadaController;
 use App\Http\Controllers\PasajeController;
+use App\Http\Controllers\EmpleadoController;
+
 
 // Route::get('/', function () {
 //     return view('');
@@ -43,3 +45,7 @@ Route::post('/datosColectivo',[ColectivoController::class,"datosColectivo"])->na
 Route::post('/datoscolectivosdisponibles',[ColectivoController::class,"datosColectivosDisponibles"])->name('datoscolectivosdisponibles');
 
 Route::resource('pasajes', PasajeController::class);
+
+//RUTAS EMPLEADOS
+Route::resource('empleados', EmpleadoController::class);
+Route::post('/datosEmpleado',[EmpleadoController::class,"datosEmpleado"])->name('datosEmpleado');

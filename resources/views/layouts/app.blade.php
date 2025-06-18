@@ -63,7 +63,7 @@
                 <a class="nav-link menu-toggle" href="javascript:void(0)">
                  <i class="bi bi-gear me-2"></i>{{ __('Administrador') }}</a>
                 <ul class="submenu list-unstyled">
-                    <li><a class="nav-link" href="#">Registrar empleado</a></li>
+                    <li><a class="nav-link" href=" {{ route('empleados.index') }} ">Empleados</a></li>
                     <li><a class="nav-link" href="#">Gestionar descuentos</a></li>
                 </ul>
             </div>

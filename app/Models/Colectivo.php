@@ -9,6 +9,9 @@ class Colectivo extends Model
     protected $table = "colectivos";
     protected $primaryKey = "id";
     protected $fillable = ['nro_colectivo', 'cant_butacas', 'estado', 'servicios'];
+        protected $casts = [
+        'servicios' => 'array',
+    ];
 
 
     static function getColectivos()
@@ -19,6 +22,8 @@ class Colectivo extends Model
 
         return $colectivos;
     }
+
+
     static function getColectivo($id)
     {
         $colectivo = Colectivo::select()

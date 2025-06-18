@@ -8,6 +8,8 @@ use App\Models\Colectivo;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+
 
 class ColectivoController extends Controller
 {
@@ -32,15 +34,15 @@ class ColectivoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreColectivoRequest $request) : RedirectResponse
+    public function store(StoreColectivoRequest $request): RedirectResponse
     {
         $validatedData = $request->validated();
 
         Colectivo::create([
             'nro_colectivo' => $validatedData['nro_colectivo'],
             'cant_butacas' => $validatedData['cant_butacas'],
-            'estado' => '1',
-            'servicios' => $request->input('servicios') ?? '',
+            'estado' => $request->input('estado'),
+            'servicios' => $request->input('servicios', []),
         ]);
 
         return redirect()->route('colectivos.index')->with('success', 'Colectivo creado correctamente.');
@@ -67,16 +69,18 @@ class ColectivoController extends Controller
      */
     public function update(Request $request, Colectivo $colectivo)
     {
+
         $request->validate([
             'nro_colectivo' => 'required|unique:colectivos,nro_colectivo,' . $colectivo->id,
             'cant_butacas' => 'required|integer|min:1',
-            'servicios' => 'nullable|string',
+            'servicios' => 'nullable|array',
+            'servicios.*' => 'string',
         ]);
 
         $colectivo->update([
             'nro_colectivo' => $request->input('nro_colectivo'),
             'cant_butacas' => $request->input('cant_butacas'),
-            'servicios' => $request->input('servicios'),
+            'servicios' => $request->input('servicios', []),
         ]);
 
         return redirect()->route('colectivos.index')->with('success', 'Colectivo actualizado correctamente.');
@@ -94,12 +98,13 @@ class ColectivoController extends Controller
         //return response()->json(['success' => true, 'message' => 'Colectivo dado de baja correctamente.']);
     }
 
-    public function datosColectivo(Request $request){
+    public function datosColectivo(Request $request)
+    {
         $query = Colectivo::query();
 
         $total = $query->count();
 
-         // Búsqueda global, o sea por todas las columas
+        // Búsqueda global, o sea por todas las columas
         if ($search = $request->input('search.value')) {
             $query->where(function ($q) use ($search) {
                 $q->where('id', 'like', "%{$search}%")
@@ -132,7 +137,8 @@ class ColectivoController extends Controller
         ]);
     }
 
-    public function datosColectivosDisponibles(Request $request) {
+    public function datosColectivosDisponibles(Request $request)
+    {
         $colectivos = Colectivo::datosColectivosDisponibles($request->cantPasajes, $request->idColectivo);
         return response()->json($colectivos);
     }

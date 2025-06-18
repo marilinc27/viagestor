@@ -5,7 +5,7 @@
 
 <section>
 
-    <a href="{{ route('colectivos.create') }}" class="btn btn-primary">Crear Colectivo</a>
+    <a href="{{ route('colectivos.create') }}" class="btn btn-primary mb-5">Crear Colectivo</a>
      <table id="tablacolectivos" class="display table table-bordered">
             <thead>
 
