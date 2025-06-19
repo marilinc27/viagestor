@@ -26,7 +26,6 @@ $(document).ready(function() {
                 searchable: false,
                 render: function (data, type, row) {
                     return `
-                        <a href="${baseUrlEdit}/${row.id}/edit" class="btn btn-sm btn-primary me-1">✏️ Editar</a>
                         <button class="btn btn-sm btn-danger btn-borrar" data-id="${row.id}">🗑️ Borrar</button>
                     `;
                 }

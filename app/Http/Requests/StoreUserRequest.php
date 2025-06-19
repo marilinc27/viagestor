@@ -15,9 +15,11 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'  => ['required'],
+            'nombre'  => ['required'],
+            'apellido'  => ['required'],
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'confirmed'],
+            'tipo_usuario' => ['required', 'integer'],
             'password_confirmation' => ['required'],
         ];
     }
@@ -28,7 +30,9 @@ class StoreUserRequest extends FormRequest
             'password.confirmed' => 'Las contraseñas no coinciden.',
             'email.unique' => 'Ya existe este correo.',
             'password.required' => 'El campo contraseña es obligatorio',
-            'name.required' => 'El campo nombre es obligatorio',
+            'nombre.required' => 'El campo nombre es obligatorio',
+            'apellido.required' => 'El campo nombre es obligatorio',
+            'tipo_usuario.required' => 'Debe seleccionar un tipo de perfil',
             'password_confirmation.required' => 'El campo confirmar contraseña es obligatorio'
 
         ];

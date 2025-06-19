@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Empleado;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Support\Facades\Hash as FacadesHash;
 
 class EmpleadoController extends Controller
@@ -31,15 +33,17 @@ class EmpleadoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request): RedirectResponse
     {
-        $request->validate([
+        $validatedData = $request->validated();
+
+        /*$request->validate([
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
             'email' => 'required|email|unique:usuarios,email|unique:users,email',
             'tipo_usuario' => 'required|integer',
             'password' => 'required|string|min:6',
-        ]);
+        ]);*/
 
         // Crear el empleado
         $empleado = Empleado::create([
@@ -52,9 +56,9 @@ class EmpleadoController extends Controller
 
         // Crear el usuario (para login)
         User::create([
-            'name' => $request->nombre . ' ' . $request->apellido,
-            'email' => $request->email,
-            'password' => FacadesHash::make($request->contrasenia),
+            'name' => $validatedData['nombre']." ".$validatedData['apellido'],
+            'email' => $validatedData['email'],
+            'password' => FacadesHash::make($validatedData['password'])
         ]);
 
         return redirect()->route('empleados.index')->with('success', 'Empleado creado correctamente');
