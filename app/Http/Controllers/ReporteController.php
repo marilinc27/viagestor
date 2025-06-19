@@ -3,29 +3,87 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReporteController extends Controller
 {
-    public function destinosMasConcurridos()
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
     {
-        $datos = DB::table('pasajes')
-            ->select('destino', DB::raw('COUNT(*) as cantidad'))
-            ->groupBy('destino')
-            ->orderByDesc('cantidad')
-            ->get();
-
-        return view('reportes.destinos', compact('datos'));
+        //
     }
 
-    public function destinosMasConcurridosPDF()
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
-        $datos = DB::table('pasajes')
-            ->select('destino', DB::raw('COUNT(*) as cantidad'))
-            ->groupBy('destino')
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+
+    public function pasajesVendidos()
+    {
+        $resultados = DB::table('pasajes')
+            ->select('fecha_salida', DB::raw('COUNT(*) as cantidad'))
+            ->groupBy('fecha_salida')
+            ->orderBy('fecha_salida', 'desc')
+            ->get();
+
+        return view('reportes.pasajes', compact('resultados'));
+    }
+
+    public function destinosPopulares()
+    {
+        $resultados = DB::table('pasajes as p')
+            ->join('paradas as pa', 'p.id_parada_destino', '=', 'pa.id')
+            ->join('ciudades as c', 'pa.id_ciudad_destino', '=', 'c.id')
+            ->select('c.nombre as ciudad_destino', DB::raw('COUNT(*) as cantidad'))
+            ->groupBy('c.nombre')
             ->orderByDesc('cantidad')
             ->get();
 
-        $pdf = Pdf::loadView('reportes.destinos_pdf', compact('datos'));
-        return $pdf->download('destinos_mas_concurridos.pdf');
+        return view('reportes.destinos', compact('resultados'));
     }
 }

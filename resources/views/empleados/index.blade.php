@@ -1,24 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
+    <section>
 
-
-<section>
-
-    <a href="{{ route('empleados.create') }}" class="btn btn-primary mb-5">Crear Empleado</a>
-     <table id="tablacolectivos" class="display table table-bordered">
+        <a href="{{ route('empleados.create') }}" class="btn btn-primary mb-5">Crear Empleado</a>
+        <table id="tablaempleados" class="display table table-bordered">
             <thead>
 
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Apellido</th>
-                <th>Email</th>
-                <th>Estado</th>
+                <th>Correo</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+            </thead>
+
             <tbody>
-                </thead>
 
             </tbody>
         </table>
 
-</section>
+    </section>
 @endsection
+
+@push('scripts')
+    <script>
+        var urlDatosEmpleado = "{{ route('datosEmpleado') }}";
+        const baseUrlEdit = "{{ url('empleados') }}";
+    </script>
+    <script src="{{ asset('js/tablas/empleados.js') }}"></script>
+@endpush

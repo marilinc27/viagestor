@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+    <section>
 
-
-<section>
-
-    <a href="{{ route('colectivos.create') }}" class="btn btn-primary mb-5">Crear Colectivo</a>
-     <table id="tablacolectivos" class="display table table-bordered">
+        <a href="{{ route('colectivos.create') }}" class="btn btn-primary mb-5">Crear Colectivo</a>
+        <table id="tablacolectivos" class="display table table-bordered">
             <thead>
 
                 <th>ID</th>
@@ -14,13 +12,15 @@
                 <th>Butacas</th>
                 <th>Servicios</th>
                 <th>Estado</th>
+
+            </thead>
+
             <tbody>
-                </thead>
 
             </tbody>
         </table>
 
-</section>
+    </section>
 @endsection
 @push('scripts')
     <script>

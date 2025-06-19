@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Empleado;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash as FacadesHash;
 
 class EmpleadoController extends Controller
 {
@@ -18,7 +20,7 @@ class EmpleadoController extends Controller
         return view("empleados.index", compact("variable"));
     }
 
-     /**
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -31,7 +33,31 @@ class EmpleadoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'email' => 'required|email|unique:usuarios,email|unique:users,email',
+            'tipo_usuario' => 'required|integer',
+            'password' => 'required|string|min:6',
+        ]);
+
+        // Crear el empleado
+        $empleado = Empleado::create([
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'email' => $request->email,
+            'tipo_usuario' => $request->tipo_usuario,
+            'estado' => 2, // activo por defecto
+        ]);
+
+        // Crear el usuario (para login)
+        User::create([
+            'name' => $request->nombre . ' ' . $request->apellido,
+            'email' => $request->email,
+            'password' => FacadesHash::make($request->contrasenia),
+        ]);
+
+        return redirect()->route('empleados.index')->with('success', 'Empleado creado correctamente');
     }
 
     /**
@@ -39,7 +65,7 @@ class EmpleadoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        //datosEmpleado
     }
 
     /**
@@ -47,7 +73,7 @@ class EmpleadoController extends Controller
      */
     public function edit(Empleado $empleado)
     {
-        return view('empleados.edit', compact('empleado'));    
+        return view('empleados.edit', compact('empleado'));
     }
 
     /**
@@ -64,5 +90,10 @@ class EmpleadoController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function datosEmpleado(){
+        $empleados = Empleado::get();
+        return response()->json(['data' => $empleados]);
     }
 }

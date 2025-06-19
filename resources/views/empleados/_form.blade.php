@@ -51,9 +51,8 @@
         <label for="tipo_usuario" class="form-label">Tipo de usuario</label>
         <select name="tipo_usuario" id="tipo_usuario" class="form-control" required>
             <option value="">-- Seleccionar --</option>
-            <option value="admin" {{ old('tipo_usuario', $isEdit ? $empleado->tipo_usuario : '') == 'admin' ? 'selected' : '' }}>Administrador</option>
-            <option value="empleado" {{ old('tipo_usuario', $isEdit ? $empleado->tipo_usuario : '') == 'empleado' ? 'selected' : '' }}>Empleado</option>
-            <option value="supervisor" {{ old('tipo_usuario', $isEdit ? $empleado->tipo_usuario : '') == 'supervisor' ? 'selected' : '' }}>Supervisor</option>
+            <option value="1" {{ old('tipo_usuario', $isEdit ? $empleado->tipo_usuario : '1') == '1' ? 'selected' : '' }}>Administrador</option>
+            <option value="2" {{ old('tipo_usuario', $isEdit ? $empleado->tipo_usuario : '2') == '2' ? 'selected' : '' }}>Empleado</option>
         </select>
     </div>
 
