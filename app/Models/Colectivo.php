@@ -9,7 +9,7 @@ class Colectivo extends Model
     protected $table = "colectivos";
     protected $primaryKey = "id";
     protected $fillable = ['nro_colectivo', 'cant_butacas', 'estado', 'servicios'];
-
+    public $timestamps = false;
 
     static function getColectivos()
     {

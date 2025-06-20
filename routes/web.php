@@ -23,6 +23,7 @@ Route::get('home', [AuthenticateController::class, 'dashboard'])->name('home');
 //RUTAS VIAJE
 Route::resource('viajes', ViajeController::class);
 Route::post('/datosviaje',[ViajeController::class,"datosviaje"])->name('datosviaje');
+Route::post('/datosviajepasaje',[ViajeController::class,"datosViajePasaje"])->name('datosviajepasaje');
 
 //RUTAS PARADAS
 Route::resource('paradas', ParadaController::class);
@@ -41,5 +42,6 @@ Route::post('/datosciudades',[CiudadController::class,"datosCiudades"])->name('d
 Route::resource('colectivos', ColectivoController::class);
 Route::post('/datosColectivo',[ColectivoController::class,"datosColectivo"])->name('datosColectivo');
 Route::post('/datoscolectivosdisponibles',[ColectivoController::class,"datosColectivosDisponibles"])->name('datoscolectivosdisponibles');
+
 
 Route::resource('pasajes', PasajeController::class);

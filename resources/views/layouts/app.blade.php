@@ -81,7 +81,7 @@
     </div>
 
     <main class="main-content bg-gris-claro">
-        <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="p-3 mb-4 bg-light rounded-3">
             <div class="container-fluid">
                 @if (session('success'))
                     <div class="alert alert-success" role="alert">
