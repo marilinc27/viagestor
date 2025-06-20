@@ -56,14 +56,15 @@
                 <a class="nav-link menu-toggle" href="javascript:void(0)">
                    <i class="bi bi-bar-chart-line me-2"></i>{{ __('Reportes') }}</a>
                 <ul class="submenu list-unstyled">
-                    <li><a class="nav-link" href="#">Reporte 1</a></li>
+                    <li><a class="nav-link" href="{{ route('reportes.pasajes') }}">Pasajes vendidos por día</a></li>
+                    <li><a class="nav-link" href="{{ route('reportes.destinos') }}">Destinos más concurridos</a></li>
                 </ul>
             </div>
             <div>
                 <a class="nav-link menu-toggle" href="javascript:void(0)">
                  <i class="bi bi-gear me-2"></i>{{ __('Administrador') }}</a>
                 <ul class="submenu list-unstyled">
-                    <li><a class="nav-link" href="#">Registrar empleado</a></li>
+                    <li><a class="nav-link" href=" {{ route('empleados.index') }} ">Empleados</a></li>
                     <li><a class="nav-link" href="#">Gestionar descuentos</a></li>
                 </ul>
             </div>

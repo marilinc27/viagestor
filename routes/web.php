@@ -8,6 +8,9 @@ use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\ColectivoController;
 use App\Http\Controllers\ParadaController;
 use App\Http\Controllers\PasajeController;
+use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\ReporteController;
+
 
 // Route::get('/', function () {
 //     return view('');
@@ -45,3 +48,11 @@ Route::post('/datoscolectivosdisponibles',[ColectivoController::class,"datosCole
 
 
 Route::resource('pasajes', PasajeController::class);
+
+//RUTAS EMPLEADOS
+Route::resource('empleados', EmpleadoController::class);
+Route::post('/datosEmpleado',[EmpleadoController::class,"datosEmpleado"])->name('datosEmpleado');
+
+//REPORTES
+Route::get('/reportes/pasajes-vendidos', [ReporteController::class, 'pasajesVendidos'])->name('reportes.pasajes');
+Route::get('/reportes/destinos-populares', [ReporteController::class, 'destinosPopulares'])->name('reportes.destinos');
