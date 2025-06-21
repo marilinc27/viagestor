@@ -15,6 +15,7 @@ class Viaje extends Model
         "hora_salida",
         "estado"
     ];
+     public $timestamps = false;
 
 
     static function getViajes()

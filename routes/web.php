@@ -30,6 +30,7 @@ Route::post('/datosviajepasaje',[ViajeController::class,"datosViajePasaje"])->na
 
 //RUTAS PARADAS
 Route::resource('paradas', ParadaController::class);
+Route::post('/getpreciosparadas',action:[ParadaController::class, 'getPreciosParadas'])->name('getpreciosparadas');
 
 //RUTAS RECORRIDOS
 Route::resource('recorridos', RecorridoController::class);

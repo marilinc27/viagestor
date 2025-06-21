@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Colectivo;
+use App\Models\PrecioParada;
 use App\Models\Recorrido;
 use App\Models\Viaje;
 use App\Models\Estado;
@@ -36,14 +37,7 @@ class ViajeController extends Controller
      */
     public function store(Request $request)
     {
-        $paradasPrecios = json_decode($request->precios, true);
-        foreach ($paradasPrecios as $precio) {
-            DB::table('precios_paradas')->insert([
-                'id_parada' => $precio['idParada'],
-                'fecha_salida' => $request->fechaSalida,
-                'precio' => $precio['precio']
-            ]);
-        }
+
 
         // CALCULO FECHA DE LLEGADA
         $hs_total = Recorrido::getHsTotalRecorridos($request->idRecorrido);
@@ -58,13 +52,22 @@ class ViajeController extends Controller
 
         $fechaLlegada->addHours($horas)->addMinutes($minutos)->addSeconds($segundos);
 
-        DB::table('viajes')->insert([
+        $idViaje = DB::table('viajes')->insertGetId([
             'id_recorrido' => $request->idRecorrido,
             'fecha_salida' => $request->fechaSalida,
             'fecha_llegada' => $fechaLlegada,
             'pasajes_disponibles' => $request->pasajesDisponibles,
             'estado' => 2
         ]);
+
+        $paradasPrecios = json_decode($request->precios, true);
+        foreach ($paradasPrecios as $precio) {
+            DB::table('precios_paradas')->insert([
+                'id_parada' => $precio['idParada'],
+                'id_viaje' => $idViaje,
+                'precio' => $precio['precio']
+            ]);
+        }
     }
 
     /**
@@ -93,7 +96,7 @@ class ViajeController extends Controller
         $fechaLlegada = $this->calculoFechaLlegada($request->idRecorrido, $request->fechaSalida);
 
         DB::table('viajes')
-            ->where('id', $request->idViaje) // Reemplazá $id por el ID del viaje que querés actualizar
+            ->where('id', $request->idViaje)
             ->update([
                 'id_colectivo' => $request->idColectivo,
                 'fecha_salida' => $request->fechaSalida,
@@ -102,12 +105,21 @@ class ViajeController extends Controller
                 'pasajes_disponibles' => $request->pasajesDisponiblesActual
             ]);
 
-        Colectivo::updateEstado($request->idColectivo, 6);
+
+            if (isset($request->colectivoOriginal)) {
+                //Si ya habia un colectivo asignado lo vuelvo a poner como disponible y luego resuervo el nuevo
+                Colectivo::updateEstado($request->colectivoOriginal, 4);
+                Colectivo::updateEstado($request->idColectivo, 6);
+            } else {
+                if (isset($request->idColectivo)) {
+                    Colectivo::updateEstado($request->idColectivo, 6);
+                }
+            }
+
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Viaje $viaje)
     {
         //
@@ -192,6 +204,73 @@ class ViajeController extends Controller
             'data' => $data,
         ]);
     }
+
+    public function datosViajePasaje(Request $request)
+    {
+        $query = Viaje::query();
+
+        $fechaInicio = Carbon::now(); // ahora mismo
+        $fechaFin = Carbon::now()->addMonths(2); // exactamente dentro de 2 meses a esta hora
+
+
+        $query->join('recorridos', 'recorridos.id', 'viajes.id_recorrido')
+            ->join('ciudades as des', 'des.id', 'recorridos.id_ciudad_destino')
+            ->join('ciudades as ori', 'ori.id', 'recorridos.id_ciudad_origen')
+            ->join('estados as e', 'e.id', 'viajes.estado')
+            ->leftJoin('colectivos', 'colectivos.id', 'viajes.id_colectivo')
+            ->select(
+                'viajes.id',
+                'viajes.id_recorrido',
+                'viajes.fecha_salida as fh_salida',
+                'viajes.pasajes_disponibles',
+                'e.id as id_estado',
+                'e.estado',
+                'des.nombre as ciudad_destino',
+                'ori.nombre as ciudad_origen',
+                'colectivos.servicios',
+                'colectivos.nro_colectivo',
+                'colectivos.cant_butacas',
+                'colectivos.id as id_colectivo'
+            )
+            ->selectRaw("TO_CHAR(viajes.fecha_salida, 'DD/MM/YYYY') as fecha_s")
+            ->selectRaw("TO_CHAR(viajes.fecha_salida, 'HH24:MI') as hora_s")
+            ->whereBetween('viajes.fecha_salida', [$fechaInicio, $fechaFin])
+            ->whereIn('viajes.estado', [2, 7]);
+
+        $total = $query->count();
+
+        // Búsqueda global, o sea por todas las columas
+        if ($search = $request->input('search.value')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('des.nombre', 'ilike', "{$search}%")
+                    ->orWhere('ori.nombre', 'ilike', "{$search}%");
+            });
+        }
+
+        $filtered = $query->count();
+
+        // Ordenar
+        $orderColIndex = $request->input('order.0.column');
+        $orderDir = $request->input('order.0.dir');
+        $orderColName = $request->input("columns.$orderColIndex.data");
+        if ($orderColName) {
+            $query->orderBy($orderColName, $orderDir);
+        }
+
+        // Paginación
+        $start = $request->input('start', 0);
+        $length = $request->input('length', 10);
+
+        $data = $query->skip($start)->take($length)->get();
+
+        return response()->json([
+            'draw' => intval($request->input('draw')),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $filtered,
+            'data' => $data,
+        ]);
+    }
+
 
     public function calculoFechaLlegada($idRecorrido, $fechaSalida)
     {

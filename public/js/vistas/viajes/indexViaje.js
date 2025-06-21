@@ -14,6 +14,8 @@ $(document).ready(function (e) {
         $("#idViaje").val($(this).data("id"));
         $("#idRecorrido").val($(this).data("id-recorrido"));
         $("#fechaSalida").val($(this).data("salida"));
+        $("#fechaSalidaOriginal").val($(this).data("salida"));
+        $("#colectivoOriginal").val($(this).data("id-colectivo"));
         let estado = parseInt($(this).data("estado"));
         $("#estadoActual").val(estado);
         $("#estadoActual").prop("disabled", false);
@@ -81,11 +83,8 @@ $(document).ready(function (e) {
             template: kendo.template($("#listViewTemplate").html()),
         });
 
-        $("#busquedaColectivo")
-            .off("keyup")
-            .on("keyup", function () {
+        $("#busquedaColectivo").off("keyup").on("keyup", function () {
                 const valor = $(this).val();
-
                 const listView = $("#listView").data("kendoListView");
                 const dataSource = listView.dataSource;
 

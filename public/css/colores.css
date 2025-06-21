@@ -1,3 +1,9 @@
+:root {
+    --verde-muy-oscuro: #072b2b;
+    --verde-hover: #0e4849;
+    --verde-claro: #036566;
+}
+
 .bg-verde-oscuro {
     background-color: #072b2b;
 }
@@ -20,3 +26,6 @@
 .txt-ver-confirmar {
     color: #1faa59;
 }
+
+
+

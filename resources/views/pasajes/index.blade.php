@@ -1,34 +1,55 @@
+@push('styles')
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2024.1.319/styles/kendo.default-v2.min.css" />
+    <link rel="stylesheet" href="css/tablas.css" />
+@endpush
+
 @extends('layouts.app')
 
 @section('content')
-        <div class="w-100">
-            <table id="tablePasajes" class="display table table-bordered">
-                <thead>
-                    <tr class="bg-warning">
-                        <th colspan="1">ID</th>
-                        <th colspan="2">Recorrido</th>
-                        <th rowspan="2">Colectivo</th>
-                        <th rowspan="2">Fecha de salida</th>
-                        <th rowspan="2">Hora de salida </th>
-                        <th rowspan="2">Asientos disponibles</th>
-                        <th rowspan="2">Servicios</th>
-                        <th rowspan="2">Estado</th>
-                    </tr>
-                    <tr class="bg-info">
-                        <th></th>
-                        <th>ORIGEN</th>
-                        <th>DESTINO</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+    <div class="w-100">
+        <table id="tablePasajes" class="table-custom">
+            <thead>
+                <tr class="bg-warning">
+                    <th colspan="2">Recorrido</th>
+                    <th colspan="2">Colectivo</th>
+                    <th colspan="2">Salida</th>
+                    <th rowspan="2">Pasajes disponibles</th>
+                    <th rowspan="2">Estado</th>
+                </tr>
+                <tr class="bg-info">
+                    <th>ORIGEN</th>
+                    <th>DESTINO</th>
+                    <th>Nro</th>
+                    <th>Servicios</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 @endsection
 
 @push('scripts')
+    <script src="https://kendo.cdn.telerik.com/2024.1.319/js/kendo.all.min.js"></script>
     <script>
-        var urlDatosViaje = "{{ route('datosviaje') }}";
+        var urlDatosViajePasaje = "{{ route('datosviajepasaje') }}";
+        var urlParadasPrecios = "{{ route('getpreciosparadas') }}";
     </script>
     <script src="{{ asset('js/tablas/listarViajesPasajes.js') }}"></script>
+    <script type="text/x-kendo-template" id="listViewTemplate">
+                <div class="d-flex detalleFilaborder w-100">
+                    <div class="w-25 p-0">Parada #: orden #</div>
+                    <div class="w-25">#: ciudad_destino # </div>
+                    <div class="w-25">Precio: #: precio # </div>
+                    <div class="w-25">
+                        <button class='btn txt-verde-oscuro btnVerDetalleParada'>
+                            <i class="bi bi-box-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+
+                        </script>
 @endpush

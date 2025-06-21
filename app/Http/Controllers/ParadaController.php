@@ -35,9 +35,6 @@ class ParadaController extends Controller
      */
     public function show(string $id)
     {
-        // $paradas = Parada::getParadasDeUnRecorrido($id);
-        // return response()->json($paradas);
-
         return response()->json([
             'data' => Parada::getParadasDeUnRecorrido($id)
         ]);
@@ -65,5 +62,12 @@ class ParadaController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getPreciosParadas(Request $request)
+    {
+        return response()->json([
+            'data' => Parada::getParadasPrecios($request->idRecorrido, $request->idViaje)
+        ]);
     }
 }

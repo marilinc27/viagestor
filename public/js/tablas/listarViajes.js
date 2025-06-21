@@ -26,6 +26,8 @@ $(document).ready(function () {
             lengthChange: false,
             language: {
                 url: "languaje/espanoltabla.json",
+                search: "",
+                searchPlaceholder: "Buscar ciudad",
             },
             ajax: {
                 url: urlDatosViaje,
@@ -91,7 +93,10 @@ $(document).ready(function () {
                 {
                     data: null,
                     render: function (data, type, row) {
-                        if (row.id_estado == 2 || (row.id_estado == 7 && !row.id_colectivo)) {
+                        if (
+                            row.id_estado == 2 ||
+                            (row.id_estado == 7 && !row.id_colectivo)
+                        ) {
                             return `<button id='' class='btn txt-verde-oscuro btnVerViaje'
                             data-bs-toggle="modal"
                             data-bs-target="#modalEditar"
@@ -109,12 +114,9 @@ $(document).ready(function () {
                         } else {
                             return "";
                         }
-
                     },
                 },
             ],
         });
-
-
     }
 });
