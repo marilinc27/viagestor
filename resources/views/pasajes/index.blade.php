@@ -36,15 +36,25 @@
     <script>
         var urlDatosViajePasaje = "{{ route('datosviajepasaje') }}";
         var urlParadasPrecios = "{{ route('getpreciosparadas') }}";
+        var basePasajeUrl = "{{ url('pasajesDatos') }}";
     </script>
     <script src="{{ asset('js/tablas/listarViajesPasajes.js') }}"></script>
+    <script src="{{ asset('js/vistas/pasajes/indexPasajes.js') }}"></script>
     <script type="text/x-kendo-template" id="listViewTemplate">
                 <div class="d-flex detalleFilaborder w-100">
                     <div class="w-25 p-0">Parada #: orden #</div>
                     <div class="w-25">#: ciudad_destino # </div>
                     <div class="w-25">Precio: #: precio # </div>
                     <div class="w-25">
-                        <button class='btn txt-verde-oscuro btnVerDetalleParada'>
+                        <button class='btn txt-verde-oscuro' id="btnComprarPasaje"
+                        data-id=#: id #
+                        data-destino="#: ciudad_destino #"
+                        data-salida= "#: kendo.toString(fecha_salida, "yyyy-MM-dd HH:mm:ss") #"
+                        data-precio=#: precio #
+                        data-disponibilidad=#: disponibilidad_total #
+                        data-disp-pasajes=#: pasajes_disponibles #
+                        data-recorrido=#: id_recorrido #
+                        data-viaje=#: id_viaje #>
                             <i class="bi bi-box-arrow-right"></i>
                         </button>
                     </div>

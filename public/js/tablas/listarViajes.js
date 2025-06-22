@@ -107,7 +107,7 @@ $(document).ready(function () {
                             data-id-colectivo="${row.id_colectivo}"
                             data-colectivo="${row.nro_colectivo}"
                             data-id-recorrido="${row.id_recorrido}"
-                            data-butacas-colectivo="${row.cant_butacas}"
+                            data-butacas-colectivo="${row.disponibilidad_total}"
                             >
                             <i class="bi bi-pencil-fill"></i>
                             </button>`;

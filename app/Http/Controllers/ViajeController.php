@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Colectivo;
-use App\Models\PrecioParada;
 use App\Models\Recorrido;
 use App\Models\Viaje;
 use App\Models\Estado;
@@ -57,6 +56,7 @@ class ViajeController extends Controller
             'fecha_salida' => $request->fechaSalida,
             'fecha_llegada' => $fechaLlegada,
             'pasajes_disponibles' => $request->pasajesDisponibles,
+            'disponibilidad_total' => $request->pasajesDisponibles,
             'estado' => 2
         ]);
 
@@ -102,7 +102,7 @@ class ViajeController extends Controller
                 'fecha_salida' => $request->fechaSalida,
                 'fecha_llegada' => $fechaLlegada,
                 'estado' => $request->estadoActual,
-                'pasajes_disponibles' => $request->pasajesDisponiblesActual
+                'disponibilidad_total' => $request->pasajesDisponiblesActual
             ]);
 
 
@@ -146,6 +146,7 @@ class ViajeController extends Controller
                 'viajes.id_recorrido',
                 'viajes.fecha_salida as fh_salida',
                 'viajes.pasajes_disponibles',
+                'viajes.disponibilidad_total',
                 'e.id as id_estado',
                 'e.estado',
                 'des.nombre as ciudad_destino',
@@ -223,6 +224,7 @@ class ViajeController extends Controller
                 'viajes.id_recorrido',
                 'viajes.fecha_salida as fh_salida',
                 'viajes.pasajes_disponibles',
+                'viajes.disponibilidad_total',
                 'e.id as id_estado',
                 'e.estado',
                 'des.nombre as ciudad_destino',

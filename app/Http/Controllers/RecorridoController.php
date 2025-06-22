@@ -77,6 +77,10 @@ class RecorridoController extends Controller
         Recorrido::where('id', $idRecorrido)->update([
             'hs_total' => $acumuladorIntervalo,
         ]);
+
+
+       return view('nombre.vista')->with('success', 'El registro fue guardado correctamente.');
+
     }
 
     /**

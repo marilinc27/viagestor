@@ -9,40 +9,56 @@ $(document).ready(function () {
         });
     }
 
-    $(document).on("click", "#tablePasajes tbody tr:not(.listView)", function (e) {
-        ocultarFilas();
+    $(document).on(
+        "click",
+        "#tablePasajes tbody tr:not(.listView)",
+        function (e) {
+            ocultarFilas();
 
-        const idRecorrido = $(this).data("id-recorrido");
-        const idViaje = $(this).data("id-viaje");
-        const $filaDetalle = $("#fila-viaje-" + idViaje);
+            const idRecorrido = $(this).data("id-recorrido");
+            const idViaje = $(this).data("id-viaje");
+            const $filaDetalle = $("#fila-viaje-" + idViaje);
 
-        $filaDetalle.show();
+            $filaDetalle.show();
 
-        const datosParadas = new kendo.data.DataSource({
-            transport: {
-                read: {
-                    url: urlParadasPrecios,
-                    headers: {
-                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                    },
-                    dataType: "json",
-                    type: "POST",
-                    data: {
-                        idRecorrido: idRecorrido,
-                        idViaje: idViaje,
+            const datosParadas = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: urlParadasPrecios,
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                        },
+                        dataType: "json",
+                        type: "POST",
+                        data: {
+                            idRecorrido: idRecorrido,
+                            idViaje: idViaje,
+                        },
                     },
                 },
-            },
-            schema: {
-                data: "data",
-            },
-        });
+                schema: {
+                    model: {
+                        fields: {
+                            fecha_salida: {
+                                type: "date",
+                                parse: function (value) {
+                                    return kendo.parseDate(value,"yyyy-MM-dd HH:mm:ss");
+                                },
+                            },
+                        },
+                    },
+                    data: "data",
+                },
+            });
 
-        $filaDetalle.kendoListView({
-            dataSource: datosParadas,
-            template: kendo.template($("#listViewTemplate").html()),
-        });
-    });
+            $filaDetalle.kendoListView({
+                dataSource: datosParadas,
+                template: kendo.template($("#listViewTemplate").html()),
+            });
+        }
+    );
 
     let table = new DataTable("#tablePasajes", {
         processing: true,
@@ -61,7 +77,10 @@ $(document).ready(function () {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
             error: function (xhr, status, error) {
-                console.log("Error en la respuesta del servidor:", xhr.responseText);
+                console.log(
+                    "Error en la respuesta del servidor:",
+                    xhr.responseText
+                );
             },
         },
         columns: [
@@ -70,13 +89,19 @@ $(document).ready(function () {
             {
                 data: null,
                 render: function (data, type, row) {
-                    return row.nro_colectivo || `<span class="text-secondary">Sin asignar</span>`;
+                    return (
+                        row.nro_colectivo ||
+                        `<span class="text-secondary">Sin asignar</span>`
+                    );
                 },
             },
             {
                 data: null,
                 render: function (data, type, row) {
-                    return row.servicios || `<span class="text-secondary">Sin asignar</span>`;
+                    return (
+                        row.servicios ||
+                        `<span class="text-secondary">Sin asignar</span>`
+                    );
                 },
             },
             { data: null, render: (data, type, row) => row.fecha_s },

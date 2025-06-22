@@ -47,8 +47,10 @@ Route::resource('colectivos', ColectivoController::class);
 Route::post('/datosColectivo',[ColectivoController::class,"datosColectivo"])->name('datosColectivo');
 Route::post('/datoscolectivosdisponibles',[ColectivoController::class,"datosColectivosDisponibles"])->name('datoscolectivosdisponibles');
 
-
+//RUTAS PASAJES
 Route::resource('pasajes', PasajeController::class);
+Route::get('/pasajesDatos', [PasajeController::class, 'getDatosPasaje'])->name('pasajesDatos');
+Route::post('/butacasDisponibles',[PasajeController::class,"getButacasReservadas"])->name('butacasDisponibles');
 
 //RUTAS EMPLEADOS
 Route::resource('empleados', EmpleadoController::class);
