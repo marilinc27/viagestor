@@ -78,3 +78,15 @@
     cursor: pointer;
 }
 
+#header-detalle-recorrido th {
+    background-color: #209b9d;
+    color: white;
+    text-align: center;
+    font-weight: 500;
+    padding: 0.8rem;
+    /* border: 2px solid var(--color-border-header); */
+    text-transform: uppercase;
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    border-bottom: 0;
+}

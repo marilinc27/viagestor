@@ -9,7 +9,9 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/colores.css') }}">
@@ -40,12 +42,13 @@
             <a class="nav-link {{ request()->routeIs('home') ? 'active bg-verde' : '' }}" href="{{ route('home') }}">
                 <i class="bi bi-house-door me-2"></i>Inicio
             </a>
-            <a class="nav-link {{ request()->routeIs('pasajes.index') ? 'active bg-verde' : '' }}" href="{{ route('pasajes.index') }}">
+            <a class="nav-link {{ request()->routeIs('pasajes.index') ? 'active bg-verde' : '' }}"
+                href="{{ route('pasajes.index') }}">
                 <i class="bi bi-ticket-perforated me-2"></i>{{ __('Venta de pasajes') }}
             </a>
             <div>
                 <a class="nav-link menu-toggle" href="javascript:void(0)">
-                 <i class="bi bi-truck-front me-2"></i>{{ __('Gestionar recorridos y viajes') }}</a>
+                    <i class="bi bi-truck-front me-2"></i>{{ __('Gestionar recorridos y viajes') }}</a>
                 <ul class="submenu list-unstyled">
                     <li><a class="nav-link" href="{{ route('viajes.create') }}">Registrar viaje</a></li>
                     <li><a class="nav-link" href="{{ route('viajes.index') }}">Gestion e historial de viajes</a></li>
@@ -55,7 +58,7 @@
             </div>
             <div>
                 <a class="nav-link menu-toggle" href="javascript:void(0)">
-                   <i class="bi bi-bar-chart-line me-2"></i>{{ __('Reportes') }}</a>
+                    <i class="bi bi-bar-chart-line me-2"></i>{{ __('Reportes') }}</a>
                 <ul class="submenu list-unstyled">
                     <li><a class="nav-link" href="{{ route('reportes.pasajes') }}">Pasajes vendidos por día</a></li>
                     <li><a class="nav-link" href="{{ route('reportes.destinos') }}">Destinos más concurridos</a></li>
@@ -63,7 +66,7 @@
             </div>
             <div>
                 <a class="nav-link menu-toggle" href="javascript:void(0)">
-                 <i class="bi bi-gear me-2"></i>{{ __('Administrador') }}</a>
+                    <i class="bi bi-gear me-2"></i>{{ __('Administrador') }}</a>
                 <ul class="submenu list-unstyled">
                     <li><a class="nav-link" href=" {{ route('empleados.index') }} ">Empleados</a></li>
                     <li><a class="nav-link" href="#">Gestionar descuentos</a></li>
@@ -123,4 +126,5 @@
     @stack('scripts')
 
 </body>
+
 </html>

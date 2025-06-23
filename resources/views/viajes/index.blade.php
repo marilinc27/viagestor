@@ -1,11 +1,9 @@
 @push('styles')
-
     <!-- Kendo UI CSS -->
     <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2024.1.319/styles/kendo.default-v2.min.css" />
-    <link rel="stylesheet" href="css/tablas.css" />
     <!-- En el <head> de tu HTML -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="css/tablas.css" />
 @endpush
 
 @extends('layouts.app')
@@ -99,10 +97,12 @@
                                     <input type="hidden" class="form-control" name="idColectivo" id="idColectivo">
                                 </div>
                                 <div class="mb-3">
-                                    <input type="hidden" class="form-control" name="fechaSalidaOriginal" id="fechaSalidaOriginal">
+                                    <input type="hidden" class="form-control" name="fechaSalidaOriginal"
+                                        id="fechaSalidaOriginal">
                                 </div>
                                 <div class="mb-3">
-                                    <input type="hidden" class="form-control" name="colectivoOriginal" id="colectivoOriginal">
+                                    <input type="hidden" class="form-control" name="colectivoOriginal"
+                                        id="colectivoOriginal">
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Colectivo</label>
@@ -154,21 +154,21 @@
         var idColectivo;
     </script>
     <script type="text/x-kendo-template" id="listViewTemplate">
-                            <div class="item d-flex" id="idItem#: id #">
-                                <div>
-                                    <div>Nro de Colectivo: #: nro_colectivo # </div>
-                                    <div>Cant asientos: #: cant_butacas #</div>
-                                    <div class="txt-ver-confirmar">#: estado #</div>
+                                <div class="item d-flex" id="idItem#: id #">
+                                    <div>
+                                        <div>Nro de Colectivo: #: nro_colectivo # </div>
+                                        <div>Cant asientos: #: cant_butacas #</div>
+                                        <div class="txt-ver-confirmar">#: estado #</div>
+                                    </div>
+                                    <div id="botoneraAsignar">
+                                        <button class="btn btnAsignar btn-primary"
+                                        data-id-colectivo="#: id #"
+                                        data-colectivo="#: nro_colectivo #"
+                                        data-butacas-colectivo="#: cant_butacas #"
+                                        >Asignar</button>
+                                    </div>
                                 </div>
-                                <div id="botoneraAsignar">
-                                    <button class="btn btnAsignar btn-primary"
-                                    data-id-colectivo="#: id #"
-                                    data-colectivo="#: nro_colectivo #"
-                                    data-butacas-colectivo="#: cant_butacas #"
-                                    >Asignar</button>
-                                </div>
-                            </div>
-                </script>
+                    </script>
 
     <script src="{{ asset('js/tablas/listarViajes.js') }}"></script>
     <script src="{{ asset('js/vistas/viajes/indexViaje.js') }}"></script>

@@ -6,6 +6,7 @@ use App\Models\Colectivo;
 use App\Models\Recorrido;
 use App\Models\Viaje;
 use App\Models\Estado;
+use App\Models\Ciudad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -27,8 +28,9 @@ class ViajeController extends Controller
     public function create()
     {
         $recorridos = Recorrido::getRecorridosActivosOrigen();
+        $ciudadOrigen = Ciudad::where('id', 2602103018)->first();
         return view('viajes.create')
-            ->with("recorridos", $recorridos);
+            ->with("recorridos", $ciudadOrigen);
     }
 
     /**
@@ -36,12 +38,12 @@ class ViajeController extends Controller
      */
     public function store(Request $request)
     {
-
+        $fechaSalidaFormateada = $this->formateoFecha($request->fechaSalida);
 
         // CALCULO FECHA DE LLEGADA
         $hs_total = Recorrido::getHsTotalRecorridos($request->idRecorrido);
 
-        $fechaLlegada = Carbon::createFromFormat('Y-m-d\TH:i', $request->fechaSalida);
+        $fechaLlegada = Carbon::createFromFormat('Y-m-d\TH:i', $fechaSalidaFormateada);
 
         list($horas, $minutos, $segundos) = explode(':', $hs_total['hs_total']);
 
@@ -53,7 +55,7 @@ class ViajeController extends Controller
 
         $idViaje = DB::table('viajes')->insertGetId([
             'id_recorrido' => $request->idRecorrido,
-            'fecha_salida' => $request->fechaSalida,
+            'fecha_salida' => $fechaSalidaFormateada,
             'fecha_llegada' => $fechaLlegada,
             'pasajes_disponibles' => $request->pasajesDisponibles,
             'disponibilidad_total' => $request->pasajesDisponibles,
@@ -108,17 +110,17 @@ class ViajeController extends Controller
             ]);
 
 
-            if (isset($request->colectivoOriginal)) {
-                //Si ya habia un colectivo asignado lo vuelvo a poner como disponible y luego resuervo el nuevo
-                Colectivo::updateEstado($request->colectivoOriginal, 4);
+        if (isset($request->colectivoOriginal)) {
+            //Si ya habia un colectivo asignado lo vuelvo a poner como disponible y luego resuervo el nuevo
+            Colectivo::updateEstado($request->colectivoOriginal, 4);
+            Colectivo::updateEstado($request->idColectivo, 6);
+        } else {
+            if (isset($request->idColectivo)) {
                 Colectivo::updateEstado($request->idColectivo, 6);
-            } else {
-                if (isset($request->idColectivo)) {
-                    Colectivo::updateEstado($request->idColectivo, 6);
-                }
             }
+        }
 
-            return redirect()->route('recorridos.index')->with('success', 'El registro fue modificado correctamente.');
+        return redirect()->route('recorridos.index')->with('success', 'El registro fue modificado correctamente.');
     }
 
 
@@ -290,5 +292,19 @@ class ViajeController extends Controller
 
         return $fechaLlegada->addHours($horas)->addMinutes($minutos)->addSeconds($segundos);
     }
+
+    public function formateoFecha($fecha)
+    {
+        $fechaOriginal = $fecha;
+        $fechaLimpia = str_replace(["\u{A0}", "\xc2\xa0", ".", "A M", "P M"], [' ', ' ', '', 'AM', 'PM'], $fechaOriginal);
+
+        $fechaLimpia = preg_replace('/\s+/u', ' ', trim($fechaLimpia));
+
+
+        $fechaCarbon = Carbon::createFromFormat('m/d/Y h:i A', $fechaLimpia);
+        $fechaFinal = $fechaCarbon->format('Y-m-d\TH:i');
+        return $fechaFinal;
+    }
+
 
 }

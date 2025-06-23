@@ -5,6 +5,8 @@
     --verde-claro-hover: #1a7f81;
     --rojo: #ba272f;
     --rojo-hover: #8b2a2f;
+    --verde-confirmacion: #1faa59;
+    --verde-confirmacion-hover: #178f4b;
 }
 
 .bg-verde-oscuro {
@@ -27,7 +29,7 @@
 }
 
 .txt-ver-confirmar {
-    color: #1faa59;
+    color: var(--verde-confirmacion);
 }
 
 .btn-verde {
@@ -42,6 +44,16 @@
 
 .btn-rojo {
     background-color: var(--rojo);
+    color: white;
+}
+
+.btn-verde-confirmar {
+    background-color: var(--verde-confirmacion);
+    color: white;
+}
+
+.btn-verde-confirmar:hover {
+    background-color: var(--verde-confirmacion-hover);
     color: white;
 }
 
