@@ -13,7 +13,19 @@ $(document).ready(function (e) {
         cantPasajes = $(this).data("asientos");
         $("#idViaje").val($(this).data("id"));
         $("#idRecorrido").val($(this).data("id-recorrido"));
-        $("#fechaSalida").val($(this).data("salida"));
+
+        //seteo la fecha en timepicker
+        // $("#fechaSalida").val($(this).data("salida"));
+
+        console.log($(this).data("salida"));
+        const fechaRaw = $(this).data("salida"); // "2025-06-10 08:44:00"
+        const fechaJS = new Date(fechaRaw.replace(" ", "T"));
+
+        // Transformá la fecha con Tempus Dominus
+        const fechaTD = new tempusDominus.DateTime(fechaJS);
+
+        window.picker.dates.setValue(fechaTD); // ✅ Ahora sí funciona
+
         $("#fechaSalidaOriginal").val($(this).data("salida"));
         $("#colectivoOriginal").val($(this).data("id-colectivo"));
         let estado = parseInt($(this).data("estado"));
@@ -83,7 +95,9 @@ $(document).ready(function (e) {
             template: kendo.template($("#listViewTemplate").html()),
         });
 
-        $("#busquedaColectivo").off("keyup").on("keyup", function () {
+        $("#busquedaColectivo")
+            .off("keyup")
+            .on("keyup", function () {
                 const valor = $(this).val();
                 const listView = $("#listView").data("kendoListView");
                 const dataSource = listView.dataSource;

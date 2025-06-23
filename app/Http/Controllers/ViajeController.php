@@ -38,6 +38,7 @@ class ViajeController extends Controller
      */
     public function store(Request $request)
     {
+
         $fechaSalidaFormateada = $this->formateoFecha($request->fechaSalida);
 
         // CALCULO FECHA DE LLEGADA
@@ -97,13 +98,14 @@ class ViajeController extends Controller
 
     public function update(Request $request, Viaje $viaje)
     {
-        $fechaLlegada = $this->calculoFechaLlegada($request->idRecorrido, $request->fechaSalida);
+        $fechaSalidaFormateada = $this->formateoFecha($request->fechaSalida);
+        $fechaLlegada = $this->calculoFechaLlegada($request->idRecorrido, $fechaSalidaFormateada);
 
         DB::table('viajes')
             ->where('id', $request->idViaje)
             ->update([
                 'id_colectivo' => $request->idColectivo,
-                'fecha_salida' => $request->fechaSalida,
+                'fecha_salida' => $fechaSalidaFormateada,
                 'fecha_llegada' => $fechaLlegada,
                 'estado' => $request->estadoActual,
                 'disponibilidad_total' => $request->pasajesDisponiblesActual
@@ -120,7 +122,7 @@ class ViajeController extends Controller
             }
         }
 
-        return redirect()->route('recorridos.index')->with('success', 'El registro fue modificado correctamente.');
+        return redirect()->route('viajes.index')->with('success', 'El registro fue modificado correctamente.');
     }
 
 
@@ -305,6 +307,34 @@ class ViajeController extends Controller
         $fechaFinal = $fechaCarbon->format('Y-m-d\TH:i');
         return $fechaFinal;
     }
+
+//     public function formateoFechaUpdate($fecha)
+// {
+//     // Primero, convertimos la cadena para que los espacios no rompibles (U+00A0) sean espacios normales
+//     $fechaLimpia = str_replace("\u{A0}", ' ', $fecha);  // espacio unicode a espacio normal
+
+//     // Ahora removemos puntos y espacios dentro del AM/PM
+//     // Ejemplo: "A. M." o "P. M." => "AM" o "PM"
+//     $fechaLimpia = preg_replace('/A\.?\s*M\.?/i', 'AM', $fechaLimpia);
+//     $fechaLimpia = preg_replace('/P\.?\s*M\.?/i', 'PM', $fechaLimpia);
+
+//     // Quitamos otros posibles puntos sobrantes
+//     $fechaLimpia = str_replace('.', '', $fechaLimpia);
+
+//     // Limpiamos espacios múltiples
+//     $fechaLimpia = preg_replace('/\s+/', ' ', trim($fechaLimpia));
+
+//     // Intentamos parsear con Carbon
+//     try {
+//         $fechaCarbon = Carbon::createFromFormat('m/d/Y h:i A', $fechaLimpia);
+//         $fechaFinal = $fechaCarbon->format('Y-m-d\TH:i');
+//         return $fechaFinal;
+//     } catch (\Exception $e) {
+//         // En caso de error, devolvemos el mensaje para debug
+//         return "Error de fecha: " . $e->getMessage() . " | Fecha limpia: '$fechaLimpia'";
+//     }
+// }
+
 
 
 }

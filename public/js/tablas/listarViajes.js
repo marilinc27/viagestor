@@ -98,7 +98,7 @@ $(document).ready(function () {
                             row.id_estado == 2 ||
                             (row.id_estado == 7 && !row.id_colectivo)
                         ) {
-                            return `<button id='' class='btn btn-verde btnVerViaje'
+                            return `<button id='' class='btn btn-sm btn-verde btnVerViaje'
                             data-bs-toggle="modal"
                             data-bs-target="#modalEditar"
                             data-id="${row.id}"
