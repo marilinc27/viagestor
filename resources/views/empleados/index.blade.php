@@ -8,8 +8,7 @@
             <thead>
 
                 <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
+                <th>Nombre y apellido</th>
                 <th>Correo</th>
                 <th>Tipo</th>
                 <th>Acciones</th>

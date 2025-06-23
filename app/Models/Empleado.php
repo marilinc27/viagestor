@@ -14,8 +14,11 @@ class Empleado extends Model
         "apellido",
         "email",
         "tipo_usuario",
-        "estado"
+        "estado",
+        "contrasenia"
     ];
+    
+     public $timestamps = false;
 
     public function user()
     {

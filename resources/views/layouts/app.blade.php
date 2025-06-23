@@ -46,6 +46,7 @@
                 href="{{ route('pasajes.index') }}">
                 <i class="bi bi-ticket-perforated me-2"></i>{{ __('Venta de pasajes') }}
             </a>
+            @if (session()->get('idrol') == 1)
             <div>
                 <a class="nav-link menu-toggle" href="javascript:void(0)">
                     <i class="bi bi-truck-front me-2"></i>{{ __('Gestionar recorridos y viajes') }}</a>
@@ -72,6 +73,7 @@
                     <li><a class="nav-link" href="#">Gestionar descuentos</a></li>
                 </ul>
             </div>
+            @endif
             <div class="mt-auto">
                 <a class="nav-link" href="{{ route('logout') }}"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

@@ -50,6 +50,12 @@ class AuthenticateController extends Controller
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
+                        $user = Auth::user();
+                       // dd($user->tipoUsuario);
+            FacadesSession::put([
+                'rol' => $user->tipoUsuario->tipo, 
+                'idrol' => $user->tipoUsuario->id
+            ]);
             return redirect()->intended('home')
                 ->withSuccess('Sesion iniciada correctamente');
         }
@@ -98,10 +104,13 @@ class AuthenticateController extends Controller
 
     public function create(array $data)
     {
+        $name = $data['nombre']." ".$data['apellido'];
         return User::create([
-            'name' => $data['name'],
+            'name' => $name,
             'email' => $data['email'],
-            'password' => FacadesHash::make($data['password'])
+            'tipo_usuario' => $data['tipo_usuario'],
+            'password' => FacadesHash::make($data['password']),
+            'estado' => 2, // activo por defecto
         ]);
     }
 
@@ -114,6 +123,7 @@ class AuthenticateController extends Controller
     {
         FacadesSession::flush();
         Auth::logout();
+
 
         return Redirect('/');
     }

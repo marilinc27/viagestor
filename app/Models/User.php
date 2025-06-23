@@ -20,7 +20,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'tipo_usuario',
         'password',
+        'estado'
     ];
 
     /**
@@ -44,5 +46,31 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function tipoUsuario()
+    {
+        return $this->belongsTo(TiposUsuarios::class, 'tipo_usuario');
+    }
+
+    public static function get()
+    {
+        $query = self::select(
+            'users.id',
+            'users.name',
+            'users.email',
+            'users.estado',
+            'tu.tipo'
+        )
+            ->join('tipos_usuarios as tu', 'tu.id', 'users.tipo_usuario');
+
+        return $query->get();
+    }
+    public static function updateEstado($id, $estado)
+    {
+        return self::where('id', $id)
+            ->update([
+                'estado' => $estado,
+            ]);
     }
 }
