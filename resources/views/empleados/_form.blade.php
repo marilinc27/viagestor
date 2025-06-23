@@ -5,7 +5,7 @@
 <div class="mb-3">
     <a href="{{ route('empleados.index') }}" class="btn btn-secondary">← Volver</a>
 </div>
-<form action="{{ $isEdit ? route('empleados.update', $empleado->id) : route('empleados.store') }}" method="POST">
+<form action="{{ route('empleados.store') }}" method="POST">
     @csrf
     @if ($isEdit)
         @method('PUT')

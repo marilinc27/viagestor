@@ -45,20 +45,13 @@ class EmpleadoController extends Controller
             'password' => 'required|string|min:6',
         ]);*/
 
-        // Crear el empleado
-        $empleado = Empleado::create([
-            'nombre' => $request->nombre,
-            'apellido' => $request->apellido,
-            'email' => $request->email,
-            'tipo_usuario' => $request->tipo_usuario,
-            'estado' => 2, // activo por defecto
-        ]);
-
         // Crear el usuario (para login)
         User::create([
-            'name' => $validatedData['nombre']." ".$validatedData['apellido'],
+            'name' => $validatedData['nombre'] . " " . $validatedData['apellido'],
             'email' => $validatedData['email'],
-            'password' => FacadesHash::make($validatedData['password'])
+            'tipo_usuario' => $validatedData['tipo_usuario'],
+            'password' => FacadesHash::make($validatedData['password']),
+            'estado' => 2, // activo por defecto
         ]);
 
         return redirect()->route('empleados.index')->with('success', 'Empleado creado correctamente');
@@ -83,9 +76,10 @@ class EmpleadoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        // 
+
     }
 
     /**
@@ -94,10 +88,29 @@ class EmpleadoController extends Controller
     public function destroy(string $id)
     {
         //
+        $usuario = User::find($id);
+
+        User::updateEstado($usuario->id, 1);
+        
+        return response()->json(['success' => true, 'message' => 'Empleado dado de baja correctamente.']);
     }
 
-    public function datosEmpleado(){
-        $empleados = Empleado::get();
+    public function datosEmpleado()
+    {
+        $empleados = User::get();
         return response()->json(['data' => $empleados]);
+    }
+
+    public function reactivar($id)
+    {
+        $usuario = User::find($id);
+
+        if (!$usuario) {
+            return response()->json(['success' => false, 'message' => 'Empleado no encontrado.'], 404);
+        }
+
+        User::updateEstado($usuario->id, 2);
+
+        return response()->json(['success' => true, 'message' => 'Empleado reactivado correctamente.']);
     }
 }
