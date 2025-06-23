@@ -1,4 +1,5 @@
 @push('styles')
+
     <!-- Kendo UI CSS -->
     <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2024.1.319/styles/kendo.default-v2.min.css" />
     <link rel="stylesheet" href="css/tablas.css" />
@@ -26,7 +27,7 @@
         </div>
 
         <div class="w-100">
-            <table id="tablaviajes" class="table-bordered table-custom">
+            <table id="tablaviajes" class="display table-custom">
                 <thead>
                     <tr class="header-principal">
                         <th colspan="1">ID</th>
@@ -36,7 +37,7 @@
                         <th colspan="2">Salida</th>
                         <th colspan="2">Llegada</th>
                         <th rowspan="2">Estado</th>
-                        <th rowspan="2"></th>
+                        <th rowspan="2">Acciones</th>
                     </tr>
                     <tr class="sub-header">
                         <th></th>

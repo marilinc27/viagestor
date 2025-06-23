@@ -1,22 +1,23 @@
 @push('styles')
     <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2024.1.319/styles/kendo.default-v2.min.css" />
     <link rel="stylesheet" href="css/tablas.css" />
+
 @endpush
 
 @extends('layouts.app')
 
 @section('content')
     <div class="w-100">
-        <table id="tablePasajes" class="table-custom">
+        <table id="tablePasajes" class="display table-custom">
             <thead>
-                <tr class="bg-warning">
+                <tr class="header-principal">
                     <th colspan="2">Recorrido</th>
                     <th colspan="2">Colectivo</th>
                     <th colspan="2">Salida</th>
                     <th rowspan="2">Pasajes disponibles</th>
                     <th rowspan="2">Estado</th>
                 </tr>
-                <tr class="bg-info">
+                <tr class="sub-header">
                     <th>ORIGEN</th>
                     <th>DESTINO</th>
                     <th>Nro</th>

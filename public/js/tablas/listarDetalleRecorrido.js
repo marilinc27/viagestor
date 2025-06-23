@@ -15,9 +15,20 @@ $(document).ready(function () {
     });
 
     function tablaDetalle(urlDatosParadas, setPrecio) {
-        $("#tableDetalleRecorrido").DataTable({
+        if ($.fn.DataTable.isDataTable("#tableDetalleRecorrido")) {
+            $("#tableDetalleRecorrido").DataTable().clear().destroy();
+        }
+
+        const dtable = $("#tableDetalleRecorrido").DataTable({
             //configuraciones de la tabla
+            info: false,
+            lengthChange: false,
+            paging: true,
+            processing: false,
+            searching: false,
+            pageLength: 10,
             language: {
+                url: "languaje/espanoltabla.json",
                 emptyTable: "No hay recorridos",
             },
             responsive: true,
@@ -27,19 +38,8 @@ $(document).ready(function () {
                 dataType: "json",
                 data: function (d) {},
             },
-            searching: false,
-            pageLength: 5,
-            bDestroy: true,
-            lengthChange: false,
-            info: false,
             columns: [
                 {
-                    data: "id",
-                    visible: false,
-                },
-
-                {
-                    data: null,
                     render: function (data, type, row) {
                         return `PARADA #${row.orden}`;
                     },
@@ -54,7 +54,6 @@ $(document).ready(function () {
                 },
 
                 {
-                    data: null,
                     render: function (data, type, row) {
                         if (setPrecio) {
                             return `

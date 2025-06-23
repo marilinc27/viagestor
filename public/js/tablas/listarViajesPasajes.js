@@ -44,7 +44,10 @@ $(document).ready(function () {
                             fecha_salida: {
                                 type: "date",
                                 parse: function (value) {
-                                    return kendo.parseDate(value,"yyyy-MM-dd HH:mm:ss");
+                                    return kendo.parseDate(
+                                        value,
+                                        "yyyy-MM-dd HH:mm:ss"
+                                    );
                                 },
                             },
                         },
@@ -60,10 +63,12 @@ $(document).ready(function () {
         }
     );
 
-    let table = new DataTable("#tablePasajes", {
-        processing: true,
-        serverSide: true,
+    let table = $("#tablePasajes").DataTable({
+        info: false,
         lengthChange: false,
+        paging: true,
+        processing: false,
+        serverSide: true,
         language: {
             url: "languaje/espanoltabla.json",
             search: "",
@@ -127,6 +132,16 @@ $(document).ready(function () {
                 </tr>`;
                 $(row).after(filaNueva);
             });
+        },
+        initComplete: function () {
+            const input = $("#tablePasajes_filter input");
+
+            $("#tablePasajes_filter label").html(`
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></i></span>
+                ${input.prop("outerHTML")}
+            </div>
+        `);
         },
     });
 });

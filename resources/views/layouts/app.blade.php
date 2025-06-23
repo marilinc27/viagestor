@@ -5,11 +5,12 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard</title>
+    <title>Viagestor</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/colores.css') }}">
     @stack('styles')
@@ -48,7 +49,7 @@
                 <ul class="submenu list-unstyled">
                     <li><a class="nav-link" href="{{ route('viajes.create') }}">Registrar viaje</a></li>
                     <li><a class="nav-link" href="{{ route('viajes.index') }}">Gestion e historial de viajes</a></li>
-                    <li><a class="nav-link" href="{{ route('recorridos.index') }}">Registrar recorrido</a></li>
+                    <li><a class="nav-link" href="{{ route('recorridos.index') }}">Gestion de recorridos</a></li>
                     <li><a class="nav-link" href="{{ route('colectivos.index') }}">Registrar colectivos</a></li>
                 </ul>
             </div>

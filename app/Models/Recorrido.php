@@ -27,7 +27,8 @@ class Recorrido extends Model
                 'o.nombre as ciudad_origen',
                 'des.nombre as ciudad_destino',
                 'e.estado',
-                'recorridos.hs_total'
+                'recorridos.hs_total',
+                'TO_CHAR(hs_total, "HH24:MI") AS hsTotal_formateado'
             )
             ->get();
     }

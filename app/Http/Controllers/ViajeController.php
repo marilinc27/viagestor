@@ -68,6 +68,8 @@ class ViajeController extends Controller
                 'precio' => $precio['precio']
             ]);
         }
+
+        return redirect()->route('viajes.index')->with('success', 'El registro fue guardado correctamente.');
     }
 
     /**
@@ -116,7 +118,7 @@ class ViajeController extends Controller
                 }
             }
 
-
+            return redirect()->route('recorridos.index')->with('success', 'El registro fue modificado correctamente.');
     }
 
 

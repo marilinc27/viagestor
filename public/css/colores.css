@@ -1,7 +1,10 @@
 :root {
     --verde-muy-oscuro: #072b2b;
     --verde-hover: #0e4849;
-    --verde-claro: #036566;
+    --verde-claro: #209b9d;
+    --verde-claro-hover: #1a7f81;
+    --rojo: #ba272f;
+    --rojo-hover: #8b2a2f;
 }
 
 .bg-verde-oscuro {
@@ -15,8 +18,8 @@
 .bg-gris-claro {
     background-color: #dedede;
 }
-.verde {
-    background-color: #036566;
+.verde-claro {
+    background-color: var(--verde-claro);
 }
 
 .txt-verde-oscuro {
@@ -25,6 +28,26 @@
 
 .txt-ver-confirmar {
     color: #1faa59;
+}
+
+.btn-verde {
+    background-color: var(--verde-claro);
+    color: white;
+}
+
+.btn-verde:hover {
+    background-color: var(--verde-claro-hover);
+    color: white;
+}
+
+.btn-rojo {
+    background-color: var(--rojo);
+    color: white;
+}
+
+.btn-rojo:hover {
+    background-color: var(--rojo-hover);
+    color: white;
 }
 
 

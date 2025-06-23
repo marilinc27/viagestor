@@ -79,8 +79,8 @@ class RecorridoController extends Controller
         ]);
 
 
-       return view('nombre.vista')->with('success', 'El registro fue guardado correctamente.');
-
+       return redirect()->route('recorridos.index')->with('success', 'El registro fue guardado correctamente.');
+    //    return redirect("recorridos.index")->withSuccess('El registro fue guardado correctamente.');
     }
 
     /**
@@ -125,7 +125,8 @@ class RecorridoController extends Controller
                 'o.nombre as ciudad_origen',
                 'des.nombre as ciudad_destino',
                 'e.estado',
-                'recorridos.hs_total'
+                'recorridos.hs_total',
+                DB::raw("TO_CHAR(recorridos.hs_total, 'HH24:MI') AS hs_formateado")
             );
 
         $total = $query->count();

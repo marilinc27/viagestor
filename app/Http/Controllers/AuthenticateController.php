@@ -54,7 +54,7 @@ class AuthenticateController extends Controller
                 ->withSuccess('Sesion iniciada correctamente');
         }
 
-        return redirect("/")->withError('Cualquier cosa le mandaste!!!!');
+        return redirect("/")->withError('No se pudo iniciar sesión. Por favor, verifique sus datos.');
     }
 
     /**
@@ -72,7 +72,7 @@ class AuthenticateController extends Controller
 
         Auth::login($user);
 
-        return redirect("home")->withSuccess('Todo ok!');
+        return redirect("home")->withSuccess('Bienvenido/a. Tu sesión ha sido iniciada con éxito.');
     }
 
     /**
@@ -95,7 +95,7 @@ class AuthenticateController extends Controller
      * @return response()
      */
 
-     
+
     public function create(array $data)
     {
         return User::create([

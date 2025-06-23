@@ -20,10 +20,11 @@ $(document).ready(function () {
     });
 
     function tablaViajes() {
-        let table = new DataTable("#tablaviajes", {
-            processing: true,
-            serverSide: true,
+        let table = $("#tablaviajes").DataTable({
+            info: false,
             lengthChange: false,
+            paging: true,
+            processing: false,
             language: {
                 url: "languaje/espanoltabla.json",
                 search: "",
@@ -97,7 +98,7 @@ $(document).ready(function () {
                             row.id_estado == 2 ||
                             (row.id_estado == 7 && !row.id_colectivo)
                         ) {
-                            return `<button id='' class='btn txt-verde-oscuro btnVerViaje'
+                            return `<button id='' class='btn btn-verde btnVerViaje'
                             data-bs-toggle="modal"
                             data-bs-target="#modalEditar"
                             data-id="${row.id}"
@@ -117,6 +118,23 @@ $(document).ready(function () {
                     },
                 },
             ],
+            columnDefs: [
+                {
+                    targets: [4, 9, 10], // Índices de las columnas que querés centrar
+                    className: "dt-center",
+                },
+            ],
+            initComplete: function () {
+
+                const input = $("#tablaviajes_filter input");
+
+                $("#tablaviajes_filter label").html(`
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></i></span>
+                        ${input.prop("outerHTML")}
+                    </div>
+                `);
+            },
         });
     }
 });
