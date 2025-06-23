@@ -35,8 +35,20 @@ footer a:hover {
     width: 30%;
 }
 
+.w-35 {
+    width: 35%;
+}
+
 .w-60 {
     width: 60%;
+}
+
+.w-95 {
+    width: 95%;
+}
+
+.bg-gis-claro {
+    background-color: #f0f0f0;
 }
 
 body {

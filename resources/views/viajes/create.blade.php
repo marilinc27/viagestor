@@ -35,7 +35,6 @@
                     <label for="">ORIGEN</label>
                     <select id="select-origen" class="w-100" disabled>
                         <option value="{{ $recorridos->id }}">{{ $recorridos->nombre }}</option>
-
                     </select>
                 </div>
                 <div class="mb-3">
@@ -75,7 +74,7 @@
                 </div>
             </form>
         </div>
-        <div class="w-50 ms-3">
+        <div class="w-50 mx-auto">
             <table id="tableDetalleRecorrido" class="display table-custom">
                 <thead>
                     <tr id="header-detalle-recorrido" class="">

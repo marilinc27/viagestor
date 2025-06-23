@@ -1,6 +1,6 @@
 @push('styles')
     <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2024.1.319/styles/kendo.default-v2.min.css" />
-    <link rel="stylesheet" href="css/tablas.css" />
+    <link rel="stylesheet" href="css/tabla-pasaje.css" />
 
 @endpush
 
@@ -8,7 +8,7 @@
 
 @section('content')
     <div class="w-100">
-        <table id="tablePasajes" class="display table-custom">
+        <table id="tablePasajes" class="table-custom">
             <thead>
                 <tr class="header-principal">
                     <th colspan="2">Recorrido</th>
@@ -42,12 +42,12 @@
     <script src="{{ asset('js/tablas/listarViajesPasajes.js') }}"></script>
     <script src="{{ asset('js/vistas/pasajes/indexPasajes.js') }}"></script>
     <script type="text/x-kendo-template" id="listViewTemplate">
-                <div class="d-flex detalleFilaborder w-100">
-                    <div class="w-25 p-0">Parada #: orden #</div>
+                <div class="d-flex detalleFilaborder w-100 mb-2 border-bottom p-1">
+                    <div class="w-25 p-0 text-center">Parada #: orden #</div>
                     <div class="w-25">#: ciudad_destino # </div>
                     <div class="w-25">Precio: #: precio # </div>
-                    <div class="w-25">
-                        <button class='btn txt-verde-oscuro' id="btnComprarPasaje"
+                    <div class="w-25 text-center">
+                        <button class='btn btn-sm btn-verde' id="btnComprarPasaje"
                         data-id=#: id #
                         data-destino="#: ciudad_destino #"
                         data-salida= "#: kendo.toString(fecha_salida, "yyyy-MM-dd HH:mm:ss") #"

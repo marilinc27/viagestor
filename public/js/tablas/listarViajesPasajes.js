@@ -18,7 +18,7 @@ $(document).ready(function () {
             const idRecorrido = $(this).data("id-recorrido");
             const idViaje = $(this).data("id-viaje");
             const $filaDetalle = $("#fila-viaje-" + idViaje);
-
+            console.log(idViaje);
             $filaDetalle.show();
 
             const datosParadas = new kendo.data.DataSource({

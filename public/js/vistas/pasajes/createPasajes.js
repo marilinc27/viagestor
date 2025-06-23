@@ -40,18 +40,18 @@ $(document).ready(function (e) {
             let dni = $("#dni").val();
             let butaca = $("#butaca").val();
             let pasajeHTML = `
-        <div id="fila-${cont}">
-            <div>
+        <div id="fila-${cont}" class="border-bottom p-2 d-flex">
+            <div class="w-75">
                 <div>NOMBRE: ${nombre}</div>
                 <div>APELLIDO: ${apellido}</div>
                 <div>DNI: ${dni}</div>
                 <div>BUTACA: ${butaca}</div>
                 <div>PRECIO: ${precio}</div>
             </div>
-            <div>
-                <a href="#" class="btnEliminarPasajero"
+            <div class="w-25 align-content-center text-center">
+                <a href="#" class="btnEliminarPasajero text-danger"
                 data-id="#fila-${cont}"
-                data-pasajero="${cont}">Eliminar</a>
+                data-pasajero="${cont}"><i class="bi bi-x-square-fill"></i></a>
             </div>
         </div>`;
             $("#contenedorPasajeros").append(pasajeHTML);

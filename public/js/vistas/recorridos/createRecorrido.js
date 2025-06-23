@@ -16,27 +16,38 @@ $(document).ready(function () {
         });
 
         let paradaHTML = `
-            <div id="${idDivParada}" class="parada bg-danger" data-id="${cont}" style="height:60px">
+            <div id="${idDivParada}" class="parada w-100 border d-flex align-items-center justify-content-between px-2 rounded-end data-id="${cont}" style="height: 60px;">
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <select class="selectpicker select-provincia" data-live-search="true" title="Selecciona una provincia"
-                        data-ciudad="#${idSelectCiudad}" required>
-                        <option id="0" value="0"> Seleccione una provincia</option>
-                        ${optionsHTML}
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <select class="selectpicker select-ciudad" data-live-search="true" title="Selecciona una ciudad" id="${idSelectCiudad}" name="${idSelectCiudad}" required>
-                            <option value="0"> Seleccione una ciudad</option>
-                        </select>
-                    </div>
-                </div>
-                <a href="#" class="btnEliminarParada" data-id="${idDivParada}">Eliminar</a>
-            </div>
+    <!-- Contenedor de selects centrado -->
+    <div class="d-flex justify-content-center align-items-center flex-grow-1 gap-3" style="height: 40px;">
+        <div class="w-40">
+            <select class="selectpicker select-provincia w-100" data-live-search="true" title="Selecciona una provincia"
+                data-ciudad="#${idSelectCiudad}" required>
+                <option id="0" value="0"> Seleccione una provincia</option>
+                ${optionsHTML}
+            </select>
+        </div>
+        <div class="w-40">
+            <select class="selectpicker select-ciudad w-100" data-live-search="true" title="Selecciona una ciudad"
+                id="${idSelectCiudad}" name="${idSelectCiudad}" required>
+                <option value="0"> Seleccione una ciudad</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Handler y botón eliminar -->
+    <div class="d-flex align-items-center gap-2">
+        <div class="drag-handle d-flex align-items-center justify-content-center"
+            style="width: 40px; height: 40px; cursor: grab; border-radius: 5px;">
+            <span style="font-size: 20px; line-height: 1;">☰</span>
+        </div>
+        <a href="#" class="btnEliminarParada text-danger btn-sm" data-id="${idDivParada}"><i class="bi bi-x-square-fill"></i></a>
+    </div>
+</div>
+
         `;
         $("#ordenParadas").append(
-            `<div class="row  bg-info" id="orden${orden}" style="height:60px">#${orden}</div>`
+            `<div class="row align-items-center bg-gis-claro justify-content-center border rounded-start-2" id="orden${orden}" style="height:60px">${orden}</div>`
         );
         $("#contenedorParadas").append(paradaHTML);
         // $(".selectpicker").select2(); // o selectpicker('render');
@@ -109,12 +120,11 @@ $(document).ready(function () {
 
         valoresCiudades.push(unaCiudad);
 
-
-        notFormValidado = valoresCiudades.find(f=> f.id == 0);
+        notFormValidado = valoresCiudades.find((f) => f.id == 0);
 
         if (!notFormValidado) {
-            $('#contenedor-form').show();
-            $('#contenedor-error').hide();
+            $("#contenedor-form").show();
+            $("#contenedor-error").hide();
             for (let i = 0; i < valoresCiudades.length - 1; i++) {
                 let origen = valoresCiudades[i].nombre;
                 let destino = valoresCiudades[i + 1].nombre;
@@ -134,8 +144,8 @@ $(document).ready(function () {
                 tbody.append(fila);
             }
         } else {
-            $('#contenedor-form').hide();
-            $('#contenedor-error').show();
+            $("#contenedor-form").hide();
+            $("#contenedor-error").show();
         }
         e.preventDefault();
     });
@@ -161,9 +171,7 @@ $(document).ready(function () {
             arrayRecorridosFinal.push(nuevoElemento);
         });
 
-
         $("#inputCiudades").val(JSON.stringify(arrayRecorridosFinal));
         // e.preventDefault();
     });
-
 });

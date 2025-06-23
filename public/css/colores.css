@@ -13,6 +13,10 @@
     background-color: #072b2b;
 }
 
+.bg-verde-claro {
+    background-color: var(--verde-claro);
+}
+
 .bg-verde {
     background-color: #0e4849;
 }
