@@ -75,6 +75,7 @@
             </div>
             @endif
             <div class="mt-auto">
+                <div class="text-white text-uppercase nav-link"><i class="bi bi-person-circle"> </i>{{ auth()->user()->name }}</div>
                 <a class="nav-link" href="{{ route('logout') }}"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="bi bi-box-arrow-right me-2"></i>
