@@ -67,7 +67,7 @@ class ColectivoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Colectivo $colectivo)
+    public function update(StoreColectivoRequest $request, Colectivo $colectivo)
     {
 
         $request->validate([

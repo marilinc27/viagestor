@@ -3,7 +3,7 @@
 @section('content')
     <section>
 
-        <!-- <a href="{{ route('colectivos.create') }}" class="btn btn-primary mb-5">Crear Colectivo</a> -->
+        <a href="{{ route('colectivos.create') }}" class="btn btn-primary mb-5">Crear Colectivo</a> 
         <table id="tablacolectivos" class="display table-custom">
             <thead>
                 <tr class="header-principal">

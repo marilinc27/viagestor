@@ -83,11 +83,11 @@
                                                 type="submit">{{ __('Iniciar sesion') }}</button>
                                         </div>
                                     </div>
-                                    <div class="col-12">
+                                    {{-- <div class="col-12">
                                         <p class="m-0 text-secondary text-center">No tienes una cuenta? <a
                                                 href="{{ route('register') }}"
                                                 class="link-primary text-decoration-none">Registrarte</a></p>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </form>
                         </div>
