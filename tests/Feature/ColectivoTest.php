@@ -74,13 +74,13 @@ it('no permite registrar colectivo con menos de 20 butacas', function () {
 //chequeo que puse un minimo de veinte
 it('Me permite registrar si tengo el mínimo requerido', function () {
     $response = $this->post('/colectivos', [
-        'nro_colectivo' => '999',
+        'nro_colectivo' => '111',
         'cant_butacas' => 20,
         'estado' => 1,
         'servicios' => [],
     ]);
 
-    expect(Colectivo::where('nro_colectivo', '999')->exists())->toBeTrue();
+    expect(Colectivo::where('nro_colectivo', '111')->exists())->toBeTrue();
 
     /*$response->assertSessionHasErrors(['cant_butacas']);
 
@@ -90,12 +90,12 @@ it('Me permite registrar si tengo el mínimo requerido', function () {
 //chequeo que puse un minimo de veinte
 it('No me permite registrar cantidad de butacas que no es numérico', function () {
     $response = $this->post('/colectivos', [
-        'nro_colectivo' => '999',
+        'nro_colectivo' => '222',
         'cant_butacas' => 'jaxnskj',
         'estado' => 1,
         'servicios' => [],
     ]);
 
-    expect(Colectivo::where('nro_colectivo', '999')->exists())->toBeFalse();
+    expect(Colectivo::where('nro_colectivo', '222')->exists())->toBeFalse();
 
 });
